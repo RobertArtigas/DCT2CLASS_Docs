@@ -1,5 +1,5 @@
-# DCT2CLASS_Docs
-DCT2CLASS Documentation
+# DCT2CLASS
+The **DCT2CLASS** templates takes a dictionary definition and generates a base class (form), a list class (list), and the templates to apply these classes to a local procedure. It builds the basic infrastructure that can be further customized. **It is a generator.** After the generation is done you all you have is just source code.
 
 
 
