@@ -1,0 +1,141 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{6675A038-9BE5-4F68-9161-74511D006162}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Win32</Platform>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>SCHOOL</AssemblyName>
+    <OutputName>school</OutputName>
+    <DefineConstants>StringTheoryLinkMode=&gt;1%3bStringTheoryDllMode=&gt;0%3bMD5=&gt;0%3b_ABCDllMode_=&gt;0%3b_ABCLinkMode_=&gt;1</DefineConstants>
+    <Model>Dll</Model>
+    <StartArguments>/LOCAL</StartArguments>
+    <ApplicationIcon>_SoftVUn.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <vid>full</vid>
+    <check_stack>True</check_stack>
+    <check_index>True</check_index>
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <vid>off</vid>
+    <check_stack>False</check_stack>
+    <check_index>False</check_index>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="SCHOOL.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL001.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL002.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL003.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL004.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL005.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL006.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL007.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL008.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL009.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL010.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL011.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL012.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL013.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL014.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL015.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL016.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL017.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL018.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL019.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL020.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL021.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL022.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL023.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL024.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL025.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL026.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL027.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL028.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL029.clw">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL_BC.CLW">
+      <Generated>true</Generated>
+    </Compile>
+    <Compile Include="SCHOOL_BC0.CLW">
+      <Generated>true</Generated>
+    </Compile>
+    <None Include="zlibwapi.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generated>True</Generated>
+      <ProjectGenerated>True</ProjectGenerated>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Closed.ico" />
+    <Library Include="Open.ico" />
+    <Library Include="SCHOOL.exe.manifest" />
+    <FileDriver Include="ASCII" />
+    <FileDriver Include="BASIC" />
+    <FileDriver Include="TOPSPEED" />
+  </ItemGroup>
+  <Import Project="$(ClarionBinPath)\SoftVelocity.Build.Clarion.targets" />
+</Project>

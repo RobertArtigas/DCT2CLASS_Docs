@@ -1,0 +1,37 @@
+--
+-- BOF: C:\_GIT_\ROBERTARTIGAS\DCT2CLASS_DOCS\SCHOOL\SCHOOL_CLARION_CLASS_GENERATE.TXT
+-- Utility: 2021/04/18 - 07:39:14AM
+--
+
+--
+-- [None]
+--
+-- Processed Files -- BEGIN                                           2021/04/18 - 07:39:41AM
+--
+-- PROCESSED: 0001 Classes                                            Classes
+--
+-- Processed Files -- ENDED                                           2021/04/18 - 07:39:42AM 
+--
+--                                                                       Ending Date-Time: 2021/04/18 - 07:39:42AM
+--                                                                    Beginning Date-Time: 2021/04/18 - 07:39:41AM
+--                                                                        Processing Time: 1 seconds
+--  
+-- [None]
+--   1 : BASE class.
+--   0 :   Getter/Setter methods.
+--   0 :   Table I/O methods.
+--   0 :   Class transfer methods.
+--   1 :   Buffer transfer methods.
+--   1 :   Noyantis PG Base class helpers.
+--   1 : LIST class.
+--   1 :   Noyantis RC List class helpers.
+--   0 : Capesoft XML helpers.
+--   0 : Capesoft JSON helpers.
+--
+-- Generating 6 class source files [2 INC, 2 CLW, 2 TPL(free bonus)] per table
+--
+
+--
+-- Utility: 2021/04/18 - 07:39:42AM
+-- EOF: C:\_GIT_\ROBERTARTIGAS\DCT2CLASS_DOCS\SCHOOL\SCHOOL_CLARION_CLASS_GENERATE.TXT
+--

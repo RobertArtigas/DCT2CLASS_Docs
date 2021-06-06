@@ -1,0 +1,8 @@
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity name="XtremePropertyGrid" version="19.3.0.0" processorArchitecture="x86" type="win32"/>
+   <file name="Codejock.PropertyGrid.v19.3.0.ocx">
+    <typelib tlbid="{5B44EC52-B95B-45CF-98FF-A49DFEED5A92}" version="19.3" helpdir=""/>
+    <comClass clsid="{C0DE1930-864C-460A-BF43-31C616C0CA12}" tlbid="{5B44EC52-B95B-45CF-98FF-A49DFEED5A92}" progid="Codejock.PropertyGrid.19.3.0" threadingModel="Apartment" description="PropertyGrid"/>
+    <comClass clsid="{C0DE1930-FA65-4013-B673-CF3331EC7DFB}" tlbid="{5B44EC52-B95B-45CF-98FF-A49DFEED5A92}" progid="Codejock.PropertyGridGlobalSettings.19.3.0" description="PropertyGridGlobalSettings"/>
+   </file>
+</assembly>

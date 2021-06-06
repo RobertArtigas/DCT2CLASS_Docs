@@ -1,0 +1,19 @@
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity name="XtremeCalendarControl" version="19.3.0.0" processorArchitecture="x86" type="win32"/>
+   <file name="Codejock.Calendar.v19.3.0.ocx">
+    <typelib tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" version="19.3" helpdir=""/>
+    <comClass clsid="{C0DE1930-F8A9-4BA6-9A90-A4F7AA2ED191}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarEventCategories.19.3.0" description="CalendarEventCategories"/>
+    <comClass clsid="{C0DE1930-2F70-4F66-BAD7-22418073F35F}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarEventCategory.19.3.0" description="CalendarEventCategory"/>
+    <comClass clsid="{C0DE1930-B13E-400B-93A8-C3461B03E520}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarResources.19.3.0" description="CalendarResources"/>
+    <comClass clsid="{C0DE1930-3FA6-4067-93EA-6EC67A6466D3}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarResource.19.3.0" description="CalendarResource"/>
+    <comClass clsid="{C0DE1930-53E6-4486-A9A6-274A2DB3B82D}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarThemeOffice2007.19.3.0" description="CalendarThemeOffice2007"/>
+    <comClass clsid="{C0DE1930-DF5D-4434-9690-788FD471CF5C}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarThemeImageList.19.3.0" description="CalendarThemeImageList"/>
+    <comClass clsid="{C0DE1930-B8F4-4204-AEA1-2A2594493656}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarThemeRect.19.3.0" description="CalendarThemeRect"/>
+    <comClass clsid="{C0DE1930-0EF8-4AB4-AF68-4E7C7D4E53F9}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarControl.19.3.0" threadingModel="Apartment" description="CalendarControl"/>
+    <comClass clsid="{C0DE1930-E602-42FE-941F-FF71A7F0853A}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarCaptionBar.19.3.0" threadingModel="Apartment" description="CalendarCaptionBar"/>
+    <comClass clsid="{C0DE1930-6091-4CE5-BB25-19F7BAB4F960}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarResourcesManager.19.3.0" description="CalendarResourcesManager"/>
+    <comClass clsid="{C0DE1930-30E7-4833-91F5-6FC9A54281D4}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarDialogs.19.3.0" description="CalendarDialogs"/>
+    <comClass clsid="{C0DE1930-5809-4D82-9289-9A31FBF71134}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.DatePicker.19.3.0" threadingModel="Apartment" description="DatePicker"/>
+    <comClass clsid="{C0DE1930-BECB-4A1B-88C0-2BCF8C0A9890}" tlbid="{79EB16A5-917F-4145-AB5F-D3AEA60612D8}" progid="Codejock.CalendarGlobalSettings.19.3.0" description="CalendarGlobalSettings"/>
+   </file>
+</assembly>
