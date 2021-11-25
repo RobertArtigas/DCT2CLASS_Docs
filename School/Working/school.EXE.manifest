@@ -28,7 +28,62 @@
   </dependency>
   <dependency>
     <dependentAssembly>
-      <assemblyIdentity name="XtremePropertyGrid" version="19.3.0.0" processorArchitecture="x86" type="win32"/>
+      <assemblyIdentity name="XtremeShortcutBar" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeCommandBars" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeCalendarControl" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremePropertyGrid" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeTaskPanel" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeDockingPane" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeReportControl" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeSkinFramework" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeSuiteControls" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeSyntaxEdit" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeChartControl" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="XtremeFlowGraph" version="20.1.0.0" processorArchitecture="x86" type="win32"/>
     </dependentAssembly>
   </dependency>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
