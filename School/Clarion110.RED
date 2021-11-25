@@ -241,6 +241,44 @@
 *.txa = %ROOT%\Accessory\libsrc\win\_D2M2_;
 --
 -- DEVUNA, Roberto Artigas Devuna-ClassViewer development --
+-- RA.2021.09.13.MON: Start cleaning up this mess after I get it working
+--        C:\_GIT_\Devuna\__IDE__\LibSrc\win
+*.tpl   = C:\_GIT_\Devuna\__IDE__\Template\win;
+*.tpw   = C:\_GIT_\Devuna\__IDE__\Template\win;
+*.txt   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.C     = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.int   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.inc   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.clw   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.equ   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.def   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.gif   = C:\_GIT_\Devuna\__IDE__\Images;
+*.bmp   = C:\_GIT_\Devuna\__IDE__\Images;
+*.ico   = C:\_GIT_\Devuna\__IDE__\Images;
+*.EXE   = C:\_GIT_\Devuna\__IDE__\BIN;
+*.DLL   = C:\_GIT_\Devuna\__IDE__\BIN;
+*.LIB   = C:\_GIT_\Devuna\__IDE__\LIB;
+--
+-- RA.2021.10.17.SUN: Export TXA templates (Using to fix corrupted APP)
+*.tpl   = C:\_GIT_\MarkGoldberg\ClarionCommunity\CW\Templates
+--
+-- _UU_, ClarionLive ULTIMATE UTILITY PACK --
+--
+*.gif = %ROOT%\Accessory\template\win\_UU_;
+*.ico = %ROOT%\Accessory\template\win\_UU_;
+*.tpl = %ROOT%\Accessory\template\win\_UU_;
+*.tpw = %ROOT%\Accessory\template\win\_UU_;
+*.tx? = %ROOT%\Accessory\template\win\_UU_;
+*.stt = %ROOT%\Accessory\template\win\_UU_;
+*.inc = %ROOT%\Accessory\libsrc\win\_UU_;
+*.int = %ROOT%\Accessory\libsrc\win\_UU_;
+*.clw = %ROOT%\Accessory\libsrc\win\_UU_;
+*.equ = %ROOT%\Accessory\libsrc\win\_UU_;
+*.txa = %ROOT%\Accessory\libsrc\win\_UU_;
+--
+--
+--
+-- DEVUNA, Roberto Artigas Devuna-ClassViewer development --
 --
 -- Tools/Options/Clarion/Clarion for Windows/Versions Redirection File tab. 
 -- CLASS_VIEWER = C:\_Clarion_Projects_\Devuna-ClassViewer;
