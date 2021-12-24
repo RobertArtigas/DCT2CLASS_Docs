@@ -45,7 +45,9 @@
 *.rsc           = .\source; %ROOT%\lib; %ROOT%\Accessory\lib
 *.FileList.xml  = .\source;
 *.cache         = .\source;
+-- RA.2021.11.17: "*.version" files into one directory :RA.2021.11.17 --
 -- RA.2019.12.05: Version related files into one directory :RA.2019.12.05 --
+*.version       = .\version;
 *.ver           = .\version;
 *.vvr           = .\version;
 -- RA.2019.12.07: SourceVelocity - VersionControl [.dct.BinaryImport, .app.BinaryImport] :RA.2019.12.07 --
@@ -63,7 +65,8 @@
 *.manifest      = .\Working;
 *.ocx           = .\Working; %BIN%; %ROOT%\Accessory\bin
 *.dll           = .\Working; %BIN%; %ROOT%\Accessory\bin
-*.exe           = .\Working; %BIN%; %ROOT%\Accessory\bin
+-- RA.2021.04.20: Working directory 1st, Current directory 2nd, [avoid old versions]
+*.exe           = .\Working; .; %BIN%; %ROOT%\Accessory\bin
 --
 *.lib           = .\lib; %ROOT%\lib; %ROOT%\Accessory\lib
 *.inc           = %ROOT%\template; %ROOT%\convsrc; .\images; %ROOT%\Accessory\libsrc\win; 
@@ -124,6 +127,11 @@
 --
 -- IGNORE WHAT COMES AFTER THIS --
 --
+-- RA.2021.12.09: C:\_GIT_\RobertArtigas\DCT2CLASS_Docs\School\
+--*.clw           = C:\_GIT_\RobertArtigas\DCT2CLASS_Docs\School\classes;
+--*.inc           = C:\_GIT_\RobertArtigas\DCT2CLASS_Docs\School\classes;
+--*.equ           = C:\_GIT_\RobertArtigas\DCT2CLASS_Docs\School\classes;
+--
 -- RA.2021.02.10: C:\_GIT_\RobertArtigas\TheRat\Expose\Clarion\Apps\classes
 *.clw           = C:\_GIT_\RobertArtigas\TheRat\Expose\Clarion\Apps\classes;
 *.inc           = C:\_GIT_\RobertArtigas\TheRat\Expose\Clarion\Apps\classes;
@@ -162,10 +170,12 @@
 -- RYB, RUN YOUR BUSINESS --
 *.gif = %ROOT%\Accessory\template\win\_RYB;
 *.ico = %ROOT%\Accessory\template\win\_RYB;
-*.tp? = %ROOT%\Accessory\template\win\_RYB;
+*.tpl = %ROOT%\Accessory\template\win\_RYB;
+*.tpw = %ROOT%\Accessory\template\win\_RYB;
 *.txs = %ROOT%\Accessory\template\win\_RYB;
 *.stt = %ROOT%\Accessory\template\win\_RYB;
-*.in? = %ROOT%\Accessory\libsrc\win\_RYB;
+*.int = %ROOT%\Accessory\libsrc\win\_RYB;
+*.inc = %ROOT%\Accessory\libsrc\win\_RYB;
 *.clw = %ROOT%\Accessory\libsrc\win\_RYB;
 *.equ = %ROOT%\Accessory\libsrc\win\_RYB;
 *.txa = %ROOT%\Accessory\libsrc\win\_RYB;
@@ -196,10 +206,12 @@
 -- RAYS, Roberto Artigas --
 *.gif = %ROOT%\Accessory\template\win\_RAYS;
 *.ico = %ROOT%\Accessory\template\win\_RAYS;
-*.tp? = %ROOT%\Accessory\template\win\_RAYS;
+*.tpl = %ROOT%\Accessory\template\win\_RAYS;
+*.tpw = %ROOT%\Accessory\template\win\_RAYS;
 *.txs = %ROOT%\Accessory\template\win\_RAYS;
 *.stt = %ROOT%\Accessory\template\win\_RAYS;
-*.in? = %ROOT%\Accessory\libsrc\win\_RAYS;
+*.int = %ROOT%\Accessory\libsrc\win\_RAYS;
+*.inc = %ROOT%\Accessory\libsrc\win\_RAYS;
 *.clw = %ROOT%\Accessory\libsrc\win\_RAYS;
 *.equ = %ROOT%\Accessory\libsrc\win\_RAYS;
 *.txa = %ROOT%\Accessory\libsrc\win\_RAYS;
@@ -240,28 +252,6 @@
 *.equ = %ROOT%\Accessory\libsrc\win\_D2M2_;
 *.txa = %ROOT%\Accessory\libsrc\win\_D2M2_;
 --
--- DEVUNA, Roberto Artigas Devuna-ClassViewer development --
--- RA.2021.09.13.MON: Start cleaning up this mess after I get it working
---        C:\_GIT_\Devuna\__IDE__\LibSrc\win
-*.tpl   = C:\_GIT_\Devuna\__IDE__\Template\win;
-*.tpw   = C:\_GIT_\Devuna\__IDE__\Template\win;
-*.txt   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
-*.C     = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
-*.int   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
-*.inc   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
-*.clw   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
-*.equ   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
-*.def   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
-*.gif   = C:\_GIT_\Devuna\__IDE__\Images;
-*.bmp   = C:\_GIT_\Devuna\__IDE__\Images;
-*.ico   = C:\_GIT_\Devuna\__IDE__\Images;
-*.EXE   = C:\_GIT_\Devuna\__IDE__\BIN;
-*.DLL   = C:\_GIT_\Devuna\__IDE__\BIN;
-*.LIB   = C:\_GIT_\Devuna\__IDE__\LIB;
---
--- RA.2021.10.17.SUN: Export TXA templates (Using to fix corrupted APP)
-*.tpl   = C:\_GIT_\MarkGoldberg\ClarionCommunity\CW\Templates
---
 -- _UU_, ClarionLive ULTIMATE UTILITY PACK --
 --
 *.gif = %ROOT%\Accessory\template\win\_UU_;
@@ -276,9 +266,29 @@
 *.equ = %ROOT%\Accessory\libsrc\win\_UU_;
 *.txa = %ROOT%\Accessory\libsrc\win\_UU_;
 --
---
---
 -- DEVUNA, Roberto Artigas Devuna-ClassViewer development --
+-- RA.2021.08.14.SAT: Start cleaning up this mess after I get it working
+--        C:\_GIT_\Devuna\__IDE__\LibSrc\win
+*.tpl   = C:\_GIT_\Devuna\__IDE__\Template\win;
+*.tpw   = C:\_GIT_\Devuna\__IDE__\Template\win;
+*.txt   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.C     = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.int   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.inc   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.clw   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.equ   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.def   = C:\_GIT_\Devuna\__IDE__\LibSrc\win;
+*.EXE   = C:\_GIT_\Devuna\__IDE__\BIN;
+*.DLL   = C:\_GIT_\Devuna\__IDE__\BIN;
+*.LIB   = C:\_GIT_\Devuna\__IDE__\LIB;
+*.png   = .\Images; C:\_GIT_\Devuna\__IDE__\Images;
+*.gif   = .\Images; C:\_GIT_\Devuna\__IDE__\Images;
+*.bmp   = .\Images; C:\_GIT_\Devuna\__IDE__\Images;
+*.ico   = .\Images; C:\_GIT_\Devuna\__IDE__\Images;
+*.cur   = .\Images; C:\_GIT_\Devuna\__IDE__\Images;
+--
+-- RA.2021.10.17.SUN: Export TXA templates (Using to fix corrupted APP)
+*.tpl   = C:\_GIT_\MarkGoldberg\ClarionCommunity\CW\Templates
 --
 -- Tools/Options/Clarion/Clarion for Windows/Versions Redirection File tab. 
 -- CLASS_VIEWER = C:\_Clarion_Projects_\Devuna-ClassViewer;
