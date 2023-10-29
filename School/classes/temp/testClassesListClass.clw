@@ -2,22 +2,23 @@
 !  
 ! [None]
 !   1 : BASE class.
-!   0 :   Getter/Setter methods.
-!   0 :   Table I/O methods.
-!   0 :   Class transfer methods.
+!   1 :   Getter/Setter methods.
+!   1 :   Table I/O methods.
+!   1 :   Class transfer methods.
 !   1 :   Buffer transfer methods.
 !   1 :   Noyantis PG Base class helpers.
 !   1 : LIST class.
 !   1 :   Noyantis RC List class helpers.
-!   0 : Capesoft XML helpers.
-!   0 : Capesoft JSON helpers.
+!   1 : Capesoft XML helpers.
+!   1 : Capesoft JSON helpers.
 !
 ! Source:       .\classes\temp\testClassesListClass.clw
 ! Table:        Classes
+! Unique:       ClassNumber
 ! Class:        testClassesListClass
 ! Purpose:      Create a CLASS from a TABLE definition.
 ! Creator:      The DCT to CLASS generator (Clarion).
-! Date-Time:    2021.04.18 - 07.39.41
+! Date-Time:    2021.10.30 - 01.13.22
 !
   MEMBER()
 
@@ -39,6 +40,16 @@
   INCLUDE('testClassesBaseClass.inc'),ONCE
   INCLUDE('testClassesListClass.inc'),ONCE
 
+  INCLUDE('xFiles.inc'),ONCE                                                                                           ! Definitions
+
+CLA_PREFIX_XML                                    EQUATE('CLA_')
+CLA_SUFFIX_XML                                    EQUATE('.XML')
+
+  INCLUDE('jFiles.inc'),ONCE                                                                                           ! Definitions
+
+CLA_PREFIX_JSON                                   EQUATE('CLA_')
+CLA_SUFFIX_JSON                                   EQUATE('.JSON')
+
   INCLUDE('NYSEquates.equ'),ONCE                                                                                       ! Common Equates
   INCLUDE('NYSCommon.inc'),ONCE                                                                                        ! Common Definitions
   INCLUDE('NYSCalendarPro.inc'),ONCE                                                                                   ! Calendars
@@ -52,7 +63,7 @@
   INCLUDE('NYSSkinFramework.inc'),ONCE                                                                                 ! Skin Framework
   INCLUDE('NYSSuiteControls.inc'),ONCE                                                                                 ! Suite Controls
   INCLUDE('NYSSyntaxEdit.inc'),ONCE                                                                                    ! Syntax Editor
-  INCLUDE('NYSTaskPanel.inc'),ONCE                                                                                     ! Task Pannel
+  INCLUDE('NYSTaskPanel.inc'),ONCE                                                                                     ! Task Panel
 
 CLA_GETSME_DATE                                   EQUATE('@D2B')
 CLA_SHOWME_DATE                                   EQUATE('@D02B')
@@ -64,6 +75,88 @@ CLA_FORMAT_TIME                                   EQUATE('%h:%m:%s')
 CLA_BLANKS_TIME                                   EQUATE('__:__:__')
 
 !---------------------------------------------------------------------------------
+testClassesListClass.InputXML                     PROCEDURE() !,STRING,PROC
+sSavePath                                         STRING(FILE:MaxFilePath)
+sSaveFile                                         STRING(FILE:MaxFileName)
+  CODE
+  sSavePath                                       = PATH()  
+  sSaveFile                                       = CLA_PREFIX_XML & 'A_LIST_*' & CLA_SUFFIX_XML  
+
+  IF FILEDIALOGA('Load XML file', sSaveFile, 'XML Files|*.XML|All Files|*.*', FILE:LongName + FILE:AddExtension)
+    SELF.oXML.Start()
+    SELF.oXML.Load(SELF.ListQ, sSaveFile)          
+  ELSE
+    CLEAR(sSaveFile)  
+  END
+
+  SELF.ListToEdit()
+  SELF.SetDataLoadRC()
+  
+  SETPATH(sSavePath)                             
+  RETURN CLIP(sSaveFile)
+
+!---------------------------------------------------------------------
+testClassesListClass.OutputXML                    PROCEDURE() !,STRING,PROC
+sSavePath                                         STRING(FILE:MaxFilePath)
+sSaveFile                                         STRING(FILE:MaxFileName)
+  CODE
+  sSavePath                                       = PATH()  
+  sSaveFile                                       = CLA_PREFIX_XML & 'A_LIST_' & FORMAT(TODAY(),@D12) & '_' & FORMAT(CLOCK(),@T05) & CLA_SUFFIX_XML  
+
+  SELF.EditToList()
+
+  IF FILEDIALOGA('Save XML file', sSaveFile, 'XML Files|*.XML|All Files|*.*', FILE:Save + FILE:LongName + FILE:AddExtension)
+    SELF.oXML.Start()
+    SELF.oXML.Save(SELF.ListQ, sSaveFile)          
+  ELSE
+    CLEAR(sSaveFile)  
+  END
+  
+  SETPATH(sSavePath)                             
+  RETURN CLIP(sSaveFile)
+
+!---------------------------------------------------------------------------------
+testClassesListClass.InputJSON                    PROCEDURE() !,STRING,PROC
+sSavePath                                         STRING(FILE:MaxFilePath)
+sSaveFile                                         STRING(FILE:MaxFileName)
+  CODE
+  sSavePath                                       = PATH()  
+  sSaveFile                                       = CLA_PREFIX_JSON & 'A_LIST_*' & CLA_SUFFIX_JSON  
+
+  IF FILEDIALOGA('Load JSON file', sSaveFile, 'JSON Files|*.JSON|All Files|*.*', FILE:LongName + FILE:AddExtension)
+    SELF.oJSON.Start()
+    SELF.oJSON.Load(SELF.ListQ, sSaveFile)         
+  ELSE
+    CLEAR(sSaveFile)  
+  END
+
+  SELF.ListToEdit()
+  SELF.SetDataLoadRC()
+
+  SETPATH(sSavePath)                             
+  RETURN CLIP(sSaveFile)
+
+!---------------------------------------------------------------------
+testClassesListClass.OutputJSON                   PROCEDURE() !,STRING,PROC
+sSavePath                                         STRING(FILE:MaxFilePath)
+sSaveFile                                         STRING(FILE:MaxFileName)
+  CODE
+  sSavePath                                       = PATH()  
+  sSaveFile                                       = CLA_PREFIX_JSON & 'A_LIST_' & FORMAT(TODAY(),@D12) & '_' & FORMAT(CLOCK(),@T05) & CLA_SUFFIX_JSON  
+
+  SELF.EditToList()
+
+  IF FILEDIALOGA('Save JSON file', sSaveFile, 'JSON Files|*.JSON|All Files|*.*', FILE:Save + FILE:LongName + FILE:AddExtension)
+    SELF.oJSON.Start()
+    SELF.oJSON.Save(SELF.ListQ, sSaveFile)         
+  ELSE
+    CLEAR(sSaveFile)  
+  END
+  
+  SETPATH(sSavePath)                             
+  RETURN CLIP(sSaveFile)
+
+!---------------------------------------------------------------------------------
 testClassesListClass.SetEditRC                    PROCEDURE(ReportControlClass pRC)
 ReportControl_Ctrl                                CSTRING(21)
 ReportControl_Result                              BYTE
@@ -73,40 +166,40 @@ ReportControl_Result                              BYTE
 ! Noyantis: Generate the METHODS for the Report Control
 
 
-  ReportControl_Ctrl                              = SELF.oRC.AddColumn                                ('01_ClassNumber','Class Number',91,1,1,1,1)
-  ReportControl_Ctrl                              = SELF.oRC.AddColumn                                ('02_CourseNumber','Course Number',98,1,1,1,2)
-  ReportControl_Ctrl                              = SELF.oRC.AddColumn                                ('03_TeacherNumber','Teacher Number',105,1,1,1,3)
-  ReportControl_Ctrl                              = SELF.oRC.AddColumn                                ('04_RoomNumber','Room Number',84,1,1,1,4)
+  ReportControl_Ctrl                              = SELF.oRC.AddColumn                                ('01_ClassNumber','Class #',86,1,1,1,1)
+  ReportControl_Ctrl                              = SELF.oRC.AddColumn                                ('02_CourseNumber','Course #',93,1,1,1,2)
+  ReportControl_Ctrl                              = SELF.oRC.AddColumn                                ('03_TeacherNumber','Teacher #',100,1,1,1,3)
+  ReportControl_Ctrl                              = SELF.oRC.AddColumn                                ('04_RoomNumber','Room #',79,1,1,1,4)
   ReportControl_Ctrl                              = SELF.oRC.AddColumn                                ('05_ScheduledTime','Scheduled Time',200,1,1,1,5)
 
   SELF.oRC.CreateColumns()
 
 ! NOTE: Field 'ClassNumber' has validation 'NONZERO'
-                                                    SELF.SetAmountPropertiesRC                        ('01_ClassNumber','Class Number',91,CPG_CLA_FLD_TIP_SCHEDULEDTIME)
+                                                    SELF.SetAmountPropertiesRC                        ('01_ClassNumber','Class #',86,CPG_CLA_FLD_TIP_SCHEDULEDTIME)
                                                     SELF.oRC.ColumnEditStyle                          ('01_ClassNumber',xtpEditStyleRight + xtpEditStyleMultiline)
-                                                    SELF.oRC.SetColumnHeaderAlignment                 ('01_ClassNumber',xtpAlignmentRight)
-                                                    SELF.oRC.SetColumnAlignment                       ('01_ClassNumber',xtpAlignmentRight)
+                                                    SELF.oRC.SetColumnAlignment                       ('01_ClassNumber',xtpAlignmentLeft)
+                                                    SELF.oRC.SetColumnHeaderAlignment                 ('01_ClassNumber',xtpAlignmentLeft)
                                                     SELF.oRC.SetColumnDetectMouseClick                ('01_ClassNumber',1)
                                                     SELF.oRC.SetColumnEditable                        ('01_ClassNumber',1)
 
 ! NOTE: Field 'CourseNumber' has validation 'INFILE'
-                                                    SELF.SetAmountPropertiesRC                        ('02_CourseNumber','Course Number',98,CPG_CLA_FLD_TIP_SCHEDULEDTIME)
+                                                    SELF.SetAmountPropertiesRC                        ('02_CourseNumber','Course #',93,CPG_CLA_FLD_TIP_SCHEDULEDTIME)
                                                     SELF.oRC.ColumnEditStyle                          ('02_CourseNumber',xtpEditStyleRight + xtpEditStyleMultiline)
-                                                    SELF.oRC.SetColumnHeaderAlignment                 ('02_CourseNumber',xtpAlignmentRight)
-                                                    SELF.oRC.SetColumnAlignment                       ('02_CourseNumber',xtpAlignmentRight)
+                                                    SELF.oRC.SetColumnAlignment                       ('02_CourseNumber',xtpAlignmentLeft)
+                                                    SELF.oRC.SetColumnHeaderAlignment                 ('02_CourseNumber',xtpAlignmentLeft)
                                                     SELF.oRC.SetColumnDetectMouseClick                ('02_CourseNumber',1)
                                                     SELF.oRC.SetColumnEditable                        ('02_CourseNumber',1)
 
 ! NOTE: Field 'TeacherNumber' has validation 'INFILE'
-                                                    SELF.SetAmountPropertiesRC                        ('03_TeacherNumber','Teacher Number',105,CPG_CLA_FLD_TIP_SCHEDULEDTIME)
+                                                    SELF.SetAmountPropertiesRC                        ('03_TeacherNumber','Teacher #',100,CPG_CLA_FLD_TIP_SCHEDULEDTIME)
                                                     SELF.oRC.ColumnEditStyle                          ('03_TeacherNumber',xtpEditStyleRight + xtpEditStyleMultiline)
-                                                    SELF.oRC.SetColumnHeaderAlignment                 ('03_TeacherNumber',xtpAlignmentRight)
-                                                    SELF.oRC.SetColumnAlignment                       ('03_TeacherNumber',xtpAlignmentRight)
+                                                    SELF.oRC.SetColumnAlignment                       ('03_TeacherNumber',xtpAlignmentLeft)
+                                                    SELF.oRC.SetColumnHeaderAlignment                 ('03_TeacherNumber',xtpAlignmentLeft)
                                                     SELF.oRC.SetColumnDetectMouseClick                ('03_TeacherNumber',1)
                                                     SELF.oRC.SetColumnEditable                        ('03_TeacherNumber',1)
 
 ! NOTE: Field 'RoomNumber' has validation 'NONZERO'
-                                                    SELF.SetAmountPropertiesRC                        ('04_RoomNumber','Room Number',84,CPG_CLA_FLD_TIP_SCHEDULEDTIME)
+                                                    SELF.SetAmountPropertiesRC                        ('04_RoomNumber','Room #',79,CPG_CLA_FLD_TIP_SCHEDULEDTIME)
                                                     SELF.oRC.ColumnEditStyle                          ('04_RoomNumber',xtpEditStyleRight + xtpEditStyleMultiline)
                                                     SELF.oRC.SetColumnAlignment                       ('04_RoomNumber',xtpAlignmentLeft)
                                                     SELF.oRC.SetColumnHeaderAlignment                 ('04_RoomNumber',xtpAlignmentLeft)
@@ -121,6 +214,7 @@ ReportControl_Result                              BYTE
                                                     SELF.oRC.SetColumnDetectMouseClick                ('05_ScheduledTime',1)
                                                     SELF.oRC.SetColumnEditable                        ('05_ScheduledTime',1)
 
+                                                    SELF.oRC.RefreshContents(TRUE)
   RETURN
 
 !---------------------------------------------------------------------------------
@@ -194,7 +288,7 @@ testClassesListClass.ClearsRowsRC                 PROCEDURE()
   LOOP I# = RECORDS(SELF.EditQ) TO 1 BY -1
     GET(SELF.EditQ, I#)
     SELF.Debug(SELF.Thread() & ' testClassesListClass.ClearsRowsRC ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
-    SELF.oRC.DeleteRow(CLIP(SELF.EditQ.guid))
+    SELF.oRC.DeleteRow(CLIP(SELF.EditQ.ClassNumber))
     SELF.Debug(SELF.Thread() & ' testClassesListClass.ClearsRowsRC ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
     DELETE(SELF.EditQ)
   END!ENDLOOP
@@ -206,13 +300,18 @@ testClassesListClass.ClearsRowsRC                 PROCEDURE()
 testClassesListClass.SetDataLoadRC                PROCEDURE()
 ReportControl_Ctrl                                CSTRING(21)
 ReportControl_Result                              BYTE
+Filter_Record                                     BYTE(FALSE)
   CODE
   SELF.Debug(SELF.Thread() & ' ENTER: testClassesListClass.SetDataLoadRC()')
   LOOP I# = 1 TO RECORDS(SELF.EditQ)
+    Filter_Record                                 = FALSE 
     GET(SELF.EditQ, I#)
-    SELF.Debug(SELF.Thread() & ' testClassesListClass.SetDataLoadRC ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
-    SELF.RowAddRC(CLIP(SELF.EditQ.guid))
-    SELF.Debug(SELF.Thread() & ' testClassesListClass.SetDataLoadRC ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
+    !BANANA RA.2021.06.14: DO THE FILTERS HERE!
+    IF (NOT Filter_Record) THEN
+      SELF.Debug(SELF.Thread() & ' testClassesListClass.SetDataLoadRC ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
+      SELF.RowAddRC(CLIP(SELF.EditQ.ClassNumber))
+      SELF.Debug(SELF.Thread() & ' testClassesListClass.SetDataLoadRC ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
+    END!IF (NOT Filter_Record)
   END!ENDLOOP
   SELF.Debug(SELF.Thread() & ' EXITS: testClassesListClass.SetDataLoadRC()', FALSE)
   RETURN
@@ -266,8 +365,8 @@ RowFound                                          BYTE(FALSE)
   RowFound                                        = FALSE  
   LOOP I# = 1  TO RECORDS(SELF.EditQ)
     GET(SELF.EditQ, I#)
-    SELF.Debug('testClassesListClass.RowUpdatedRC: CHECK: I#=[ ' & I# & ' ], CLIP(SELF.EditQ.guid)="' & CLIP(SELF.EditQ.guid) & '", CLIP(pRowID)="' & CLIP(pRowID) & '"')
-    IF ( CLIP(SELF.EditQ.guid) = CLIP(pRowID) ) THEN
+    SELF.Debug('testClassesListClass.RowUpdatedRC: CHECK: I#=[ ' & I# & ' ], CLIP(SELF.EditQ.ClassNumber)="' & CLIP(SELF.EditQ.ClassNumber) & '", CLIP(pRowID)="' & CLIP(pRowID) & '"')
+    IF ( CLIP(SELF.EditQ.ClassNumber) = CLIP(pRowID) ) THEN
       RowFound                                    = TRUE        
       SELF.Debug('testClassesListClass.RowUpdatedRC: FOUND: I#=[ ' & I# & ' ], CLIP(pRowID)="' & CLIP(pRowID) & '"')
       BREAK 
@@ -363,7 +462,7 @@ testClassesListClass.CalcRowEdit                  PROCEDURE()
   SELF.Debug('ENTER: testClassesListClass.CalcRowEdit()', FALSE)
   LOOP I# = 1  TO RECORDS(SELF.EditQ)
     GET(SELF.EditQ, I#)
-    SELF.CalcRowItem(CLIP(SELF.EditQ.guid))
+    SELF.CalcRowItem(CLIP(SELF.EditQ.ClassNumber))
   END!LOOP
   SELF.Debug('EXITS: testClassesListClass.CalcRowEdit()', FALSE)
   RETURN
@@ -387,6 +486,86 @@ FormatClarion                                     CSTRING(21)
   RETURN
 
 !---------------------------------------------------------------------------------
+testClassesListClass.CLA_ClearAllKeys             PROCEDURE()
+  CODE
+                                                  SELF.oRC.DeleteAllGroups()
+                                                  SELF.oRC.DeleteAllSorts()
+                                                  SELF.oRC.SetColumnSortColor(FALSE,COLOR:Lime)
+  RETURN
+
+!---------------------------------------------------------------------------------
+testClassesListClass.CLA_Set_KeyClassNumber       PROCEDURE()                                                          ! 
+ReportControl_Result                              BYTE
+  CODE
+                                                    SELF.oRC.DeleteAllGroups()
+                                                    SELF.oRC.DeleteAllSorts()
+                                                    SELF.oRC.SetColumnSortColor(TRUE,COLOR:Lime)
+  ReportControl_Result                            = SELF.oRC.AddSort('01_ClassNumber','A')                             ! 
+                                                    SELF.oRC.Populate()
+  !                                                  SELF.CLA_ShowColumns()                                            ! TESTING: Show Order
+
+                                                    SELF.oRC.SetColumnIndex('01_ClassNumber',1)
+                                                    SELF.oRC.SetColumnIndex('02_CourseNumber',2)
+                                                    SELF.oRC.SetColumnIndex('03_TeacherNumber',3)
+                                                    SELF.oRC.SetColumnIndex('04_RoomNumber',4)
+                                                    SELF.oRC.SetColumnIndex('05_ScheduledTime',5)
+  RETURN
+
+!---------------------------------------------------------------------------------
+testClassesListClass.CLA_Set_KeyCourseNumber      PROCEDURE()                                                          ! 
+ReportControl_Result                              BYTE
+  CODE
+                                                    SELF.oRC.DeleteAllGroups()
+                                                    SELF.oRC.DeleteAllSorts()
+                                                    SELF.oRC.SetColumnSortColor(TRUE,COLOR:Lime)
+  ReportControl_Result                            = SELF.oRC.AddSort('02_CourseNumber','A')                            ! 
+  ReportControl_Result                            = SELF.oRC.AddSort('01_ClassNumber','A')                             ! 
+                                                    SELF.oRC.Populate()
+  !                                                  SELF.CLA_ShowColumns()                                            ! TESTING: Show Order
+
+                                                    SELF.oRC.SetColumnIndex('02_CourseNumber',1)
+                                                    SELF.oRC.SetColumnIndex('01_ClassNumber',2)
+                                                    SELF.oRC.SetColumnIndex('03_TeacherNumber',3)
+                                                    SELF.oRC.SetColumnIndex('04_RoomNumber',4)
+                                                    SELF.oRC.SetColumnIndex('05_ScheduledTime',5)
+  RETURN
+
+!---------------------------------------------------------------------------------
+testClassesListClass.CLA_Set_KeyTeacherNumber     PROCEDURE()                                                          ! 
+ReportControl_Result                              BYTE
+  CODE
+                                                    SELF.oRC.DeleteAllGroups()
+                                                    SELF.oRC.DeleteAllSorts()
+                                                    SELF.oRC.SetColumnSortColor(TRUE,COLOR:Lime)
+  ReportControl_Result                            = SELF.oRC.AddSort('03_TeacherNumber','A')                           ! 
+                                                    SELF.oRC.Populate()
+  !                                                  SELF.CLA_ShowColumns()                                            ! TESTING: Show Order
+
+                                                    SELF.oRC.SetColumnIndex('03_TeacherNumber',1)
+                                                    SELF.oRC.SetColumnIndex('01_ClassNumber',2)
+                                                    SELF.oRC.SetColumnIndex('02_CourseNumber',3)
+                                                    SELF.oRC.SetColumnIndex('04_RoomNumber',4)
+                                                    SELF.oRC.SetColumnIndex('05_ScheduledTime',5)
+  RETURN
+
+!---------------------------------------------------------------------------------
+testClassesListClass.CLA_ShowColumns              PROCEDURE()                                                          ! Show current column order
+  CODE 
+  LOOP I# = 1 TO RECORDS(SELF.oRC.ColumnQ)
+    GET(SELF.oRC.ColumnQ, I#)
+    SELF.Debug(SELF.Thread() & ' testClassesListClass.CLA_ShowColumns ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
+    SELF.Debug(SELF.Thread() & ' ID="' & CLIP(SELF.oRC.ColumnQ.ID) & '"' , FALSE)
+    SELF.Debug(SELF.Thread() & ' DefinedOrder=[ ' & FORMAT(SELF.oRC.ColumnQ.DefinedOrder,@N02) & ' ]' , FALSE)
+    SELF.Debug(SELF.Thread() & ' ItemIndex=[ ' & FORMAT(SELF.oRC.ColumnQ.ItemIndex,@N02) & ' ]' , FALSE)
+    SELF.Debug(SELF.Thread() & ' _IdNo=[ ' & FORMAT(SELF.oRC.ColumnQ._IdNo,@N02) & ' ]' , FALSE)
+    SELF.Debug(SELF.Thread() & ' Name="' & CLIP(SELF.oRC.ColumnQ.Name) & '"' , FALSE)
+    SELF.Debug(SELF.Thread() & ' Number=[ ' & FORMAT(SELF.oRC.ColumnQ.Number,@N02) & ' ]' , FALSE)
+    SELF.Debug(SELF.Thread() & ' Order=[ ' & FORMAT(SELF.oRC.ColumnQ.Order,@N02) & ' ]' , FALSE)
+    SELF.Debug(SELF.Thread() & ' testClassesListClass.CLA_ShowColumns ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
+  END
+  RETURN
+
+!---------------------------------------------------------------------------------
 testClassesListClass.Thread                       PROCEDURE()
   CODE
   RETURN '![T' & SELF.lThread & ']:CLASS'
@@ -407,6 +586,10 @@ testClassesListClass.Construct                    PROCEDURE()
   SELF.oBase                                      &= NULL
   SELF.oBase                                      &= NEW(testClassesBaseClass)
 
+  SELF.oXML                                       &= NEW(xFileXML)
+
+  SELF.oJSON                                      &= NEW(JSONClass)
+
   SELF.oRC                                        &= NULL
   SELF.bAllowFocusChange                           = TRUE
   RETURN
@@ -426,6 +609,12 @@ testClassesListClass.Destruct                     PROCEDURE()
   SELF.EditQ                                      &= NULL
   DISPOSE(SELF.oBase)
   SELF.oBase                                      &= NULL
+
+  DISPOSE(SELF.oXML)
+  SELF.oXML                                       &= NULL
+
+  DISPOSE(SELF.oJSON)
+  SELF.oJSON                                      &= NULL
 
   SELF.oRC                                        &= NULL
   SELF.bAllowFocusChange                           = TRUE
@@ -473,6 +662,7 @@ testClassesListClass.DumpEditList                 PROCEDURE()
   CODE
   IF ~SELF.bDebug THEN RETURN END
   LOOP I# = 1 TO RECORDS(SELF.EditQ)
+    GET(SELF.EditQ, I#)
     SELF.Debug(SELF.Thread() & ' testClassesListClass.DumpEditList ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
     SELF.DumpEditItem()
     SELF.Debug(SELF.Thread() & ' testClassesListClass.DumpEditList ======================================== [ ' & FORMAT(I#,@N03) & ' ]' , FALSE)
@@ -502,6 +692,53 @@ testClassesListClass.SetEditStyle                 PROCEDURE(LONG pEditStyle)
   CODE
   SELF.EditStyle                                  = pEditStyle
   SELF.Debug('SELF.EditStyle=[ ' & SELF.EditStyle & ' ]: pEditStyle=[ ' & pEditStyle & ' ]', FALSE)
+  RETURN
+
+!---------------------------------------------------------------------------------
+testClassesListClass.ScrollEvent                  PROCEDURE(LONG pScrollEvent, LONG pScrollValue)
+  CODE
+  IF(TRUE)
+    CASE(pScrollEvent)
+    OF EVENT:ScrollUp     ; SELF.Debug(SELF.Thread() & ' testClassesListClass.ScrollEvent(EVENT:ScrollUp, '      & CLIP(pScrollValue) & ')')
+    OF EVENT:ScrollDown   ; SELF.Debug(SELF.Thread() & ' testClassesListClass.ScrollEvent(EVENT:ScrollDown, '    & CLIP(pScrollValue) & ')')
+    OF EVENT:PageUp       ; SELF.Debug(SELF.Thread() & ' testClassesListClass.ScrollEvent(EVENT:PageUp, '        & CLIP(pScrollValue) & ')')
+    OF EVENT:PageDown     ; SELF.Debug(SELF.Thread() & ' testClassesListClass.ScrollEvent(EVENT:PageDown, '      & CLIP(pScrollValue) & ')')
+    OF EVENT:ScrollTop    ; SELF.Debug(SELF.Thread() & ' testClassesListClass.ScrollEvent(EVENT:ScrollTop, '     & CLIP(pScrollValue) & ')')
+    OF EVENT:ScrollBottom ; SELF.Debug(SELF.Thread() & ' testClassesListClass.ScrollEvent(EVENT:ScrollBottom, '  & CLIP(pScrollValue) & ')')
+    OF EVENT:ScrollDrag   ; SELF.Debug(SELF.Thread() & ' testClassesListClass.ScrollEvent(EVENT:ScrollDrag, '    & CLIP(pScrollValue) & ')')
+    END!CASE(pScrollEvent)
+  END!IF(TRUE)
+  CASE(pScrollEvent)
+    OF EVENT:ScrollUp     ; !SELF.ScrollToRel(-1)
+    OF EVENT:ScrollDown   ; !SELF.ScrollToRel( 1)
+    OF EVENT:PageUp       ; !SELF.ScrollToRel(-FIELD(){Prop:Items} )
+    OF EVENT:PageDown     ; !SELF.ScrollToRel( FIELD(){Prop:Items} )
+    OF EVENT:ScrollTop    ; !SELF.ScrollToFix( 1 )
+    OF EVENT:ScrollBottom ; !SELF.ScrollToFix( Records(C031_oListClass.EditQ)  )
+    OF EVENT:ScrollDrag   ; !SELF.ScrollToFix( FIELD(){PROP:VScrollPos} * Records(C031_oListClass.EditQ) / 100)
+  END!CASE(pScrollEvent)
+  RETURN
+
+!---------------------------------------------------------------------------------
+testClassesListClass.ScrollToRel                  PROCEDURE(LONG pRowDelta)
+  CODE
+  SELF.ScrollToFix(SELF.EditFEQ{PROP:Selected} + pRowDelta)
+  RETURN
+
+!---------------------------------------------------------------------------------
+testClassesListClass.ScrollToFix                  PROCEDURE(LONG pRowNew)
+  CODE
+  IF    pRowNew < 1 THEN pRowNew = 1 
+  ELSIF pRowNew > RECORDS(SELF.EditQ) THEN pRowNew = RECORDS(SELF.EditQ)
+  END 
+
+  SELF.EditFEQ{PROP:Selected} = pRowNew
+  IF NOT(SELF.EditQ &= NULL)
+    GET(SELF.EditQ, pRowNew) 
+  END 
+
+  SELF.EditRowNow = pRowNew
+  !ThisWindow.Reset()
   RETURN
 
 !---------------------------------------------------------------------------------
@@ -535,9 +772,9 @@ lQuery                                            StringTheory
   ! lQuery.SetValue('SELECT') 
   ! lQuery.Append  (' Classes.ClassNumber, Classes.CourseNumber, Classes.TeacherNumber, Classes.RoomNumber, Classes.ScheduledTime')
   ! lQuery.Append  (' FROM CLASSES.TPS')
-  ! lQuery.Append  (' WHERE guid = <39>' & CLIP(pEditStyle) & '<39>')
+  ! lQuery.Append  (' WHERE ClassNumber = ' & pEditStyle & '')
   !
-  !lQuery.SetValue('SELECT Classes.* FROM CLASSES.TPS WHERE guid = <39>' & CLIP(pEditStyle) & '<39>')
+  !lQuery.SetValue('SELECT Classes.* FROM CLASSES.TPS WHERE ClassNumber = ' & pEditStyle & '')
   lQuery.SetValue('SELECT Classes.* FROM CLASSES.TPS')
   !SETCLIPBOARD(lQuery.GetValue())
   SELF.Debug(SELF.Thread() & ':lQuery=( "' & lQuery.GetValue() & '" )' , FALSE)
@@ -667,20 +904,24 @@ testClassesListClass.SetEditFormat                PROCEDURE(LONG pEditFEQ)
 FormatCLA                                         StringTheory
   CODE
   FormatCLA.SetValue('')
-  FormatCLA.Append  ('56R(1)|MY~Class Number~@P##-#####P@#1#')                                                         ! ,NAME('ClassNumber | LONG | @P##-#####P | PROMPT(''Class Number:'')')
-  FormatCLA.Append  ('60R(1)|MY~Course Number~@n4@#3#')                                                                ! ,NAME('CourseNumber | LONG | @N4 | PROMPT(''Course Number:'')')
-  FormatCLA.Append  ('64R(1)|MY~Teacher Number~@p###-##-####p@#5#')                                                    ! ,NAME('TeacherNumber | LONG | @P###-##-####P | PROMPT(''Teacher Number:'')')
-  FormatCLA.Append  ('52L(0)|MY~Room Number~@n4@#7#')                                                                  ! ,NAME('RoomNumber | LONG | @N4 | PROMPT(''Room Number:'')')
-  FormatCLA.Append  ('80L(0)|MY~Scheduled Time~@s20@#9#')                                                              ! ,NAME('ScheduledTime | STRING(20) | @S20 | PROMPT(''Scheduled Time:'')')
+  FormatCLA.Append  ('36L(2)|MY~Class #~@P##-#####P@#1#')                                                              ! ,NAME('ClassNumber | LONG | @P##-#####P | PROMPT(''Class Number:'')')
+  FormatCLA.Append  ('40L(2)|MY~Course #~@n4@#3#')                                                                     ! ,NAME('CourseNumber | LONG | @N4 | PROMPT(''Course Number:'')')
+  FormatCLA.Append  ('44L(2)|MY~Teacher #~@p###-##-####p@#5#')                                                         ! ,NAME('TeacherNumber | LONG | @P###-##-####P | PROMPT(''Teacher Number:'')')
+  FormatCLA.Append  ('32L(2)|MY~Room #~@n4@#7#')                                                                       ! ,NAME('RoomNumber | LONG | @N4 | PROMPT(''Room Number:'')')
+  FormatCLA.Append  ('80L(2)|MY~Scheduled Time~@s20@#9#')                                                              ! ,NAME('ScheduledTime | STRING(20) | @S20 | PROMPT(''Scheduled Time:'')')
   pEditFEQ{PROP:Format} = FormatCLA.GetValue()
   RETURN
 
+!-------------------------------------------------------------------------------------------------!
+! This LIST structure is created to replace the one generated by the ABC templates.               !
+! Save your generated window structure first, then cut and paste replacing your LIST structure.   !
+!-------------------------------------------------------------------------------------------------!
 ! LIST,AT(4,40,400,40),USE(?CLA_EditQ),HVSCROLL, |
-!   FORMAT('56R(1)|MY~Class Number~@P##-#####P@#1#' & |
-!   '60R(1)|MY~Course Number~@n4@#3#' & |
-!   '64R(1)|MY~Teacher Number~@p###-##-####p@#5#' & |
-!   '52L(0)|MY~Room Number~@n4@#7#' & |
-!   '80L(0)|MY~Scheduled Time~@s20@#9#'),FROM(CLA_oListClass.EditQ), |
+!   FORMAT('36L(2)|MY~Class #~@P##-#####P@#1#' & |
+!   '40L(2)|MY~Course #~@n4@#3#' & |
+!   '44L(2)|MY~Teacher #~@p###-##-####p@#5#' & |
+!   '32L(2)|MY~Room #~@n4@#7#' & |
+!   '80L(2)|MY~Scheduled Time~@s20@#9#'),FROM(CLA_oListClass.EditQ), |
 !   #FIELDS(CLA_oListClass.EditQ.ClassNumber, |
 !   CLA_oListClass.EditQ.CourseNumber, |
 !   CLA_oListClass.EditQ.TeacherNumber, |
@@ -690,18 +931,18 @@ FormatCLA                                         StringTheory
 !  
 ! [None]
 !   1 : BASE class.
-!   0 :   Getter/Setter methods.
-!   0 :   Table I/O methods.
-!   0 :   Class transfer methods.
+!   1 :   Getter/Setter methods.
+!   1 :   Table I/O methods.
+!   1 :   Class transfer methods.
 !   1 :   Buffer transfer methods.
 !   1 :   Noyantis PG Base class helpers.
 !   1 : LIST class.
 !   1 :   Noyantis RC List class helpers.
-!   0 : Capesoft XML helpers.
-!   0 : Capesoft JSON helpers.
+!   1 : Capesoft XML helpers.
+!   1 : Capesoft JSON helpers.
 !
-!    Ending Date-Time: 2021/04/18 - 07:39:14AM
-! Beginning Date-Time: 2021/04/18 - 07:39:14AM
+!    Ending Date-Time: 2021/10/30 - 01:13:07AM
+! Beginning Date-Time: 2021/10/30 - 01:13:07AM
 !     Processing Time: 0 hundreths of a second (1 seconds)
 !
 !EOF

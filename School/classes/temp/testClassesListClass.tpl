@@ -1,7 +1,7 @@
 #!-----------------------------------------------------------------------------------------------------
 #!-----------------------------------------------------------------------------------------------------
 #!-----------------------------------------------------------------------------------------------------
-#TEMPLATE(testClassesListClass,'2021.04.18.07.39.42: testClassesListClass [GENERATED] Version: 1.00'),FAMILY('CW20','ABC')
+#TEMPLATE(testClassesListClass,'2021.10.30.01.13.22: testClassesListClass [GENERATED] Version: 1.00'),FAMILY('CW20','ABC')
 #!
 #INCLUDE('cape01.tpw')
 #INCLUDE('cape02.tpw')
@@ -9,7 +9,7 @@
 #SYSTEM
 #!
 #EQUATE(%tplVer  , '1.00')
-#EQUATE(%tplRel  , '2021.04.18.07.39.42')
+#EQUATE(%tplRel  , '2021.10.30.01.13.22')
 #!
 #EQUATE(%tplVerNumber     ,'Version ' & %tplVer & ' [ ' & %tplRel & ' ]'       )
 #EQUATE(%tplVerName       ,'Templates Generator Template Collection.'          )
@@ -106,7 +106,7 @@
 #!-----------------------------------------------------------------------------------------------------
 #!-----------------------------------------------------------------------------------------------------
 #!-----------------------------------------------------------------------------------------------------
-#EXTENSION(GlobaltestClassesListClass,'2021.04.18.07.39.42: testClassesListClass [GENERATED] Version: 1.00'),APPLICATION(testClassesListClass)
+#EXTENSION(GlobaltestClassesListClass,'2021.10.30.01.13.22: testClassesListClass [GENERATED] Version: 1.00'),APPLICATION(testClassesListClass)
 #!
 #INSERT(%PreambleMe)
 #!
@@ -120,7 +120,7 @@
       #DISPLAY(''),AT(,,,1)
       #DISPLAY('testClassesListClass')
       #DISPLAY('Templates copyright (c) by each individual author.')
-      #DISPLAY('E-MAIL: roberto.artigas.dev@gmail.com')
+      #DISPLAY('Contact: roberto.artigas.dev@gmail.com')
     #ENDBOXED
     #DISPLAY(''),AT(,,,1)
     #BOXED('Debugging Global')
@@ -178,12 +178,12 @@
 #ENDAT
 #!
 #AT(%BeforeGlobalIncludes),WHERE(%NoGlobaltestClassesListClass=0)
-RelVer:testClassesListClass EQUATE('Rel:2021.04.18.07.39.42-Ver:1.00')
+RelVer:testClassesListClass EQUATE('Rel:2021.10.30.01.13.22-Ver:1.00')
 #ENDAT
 #!-----------------------------------------------------------------------------------------------------
 #!-----------------------------------------------------------------------------------------------------
 #!-----------------------------------------------------------------------------------------------------
-#EXTENSION(LocaltestClassesListClass, ' 2021.04.18.07.39.42: LOCAL testClassesListClass [GENERATED] Version: 1.00'),PROCEDURE,REQ(GlobaltestClassesListClass(testClassesListClass))
+#EXTENSION(LocaltestClassesListClass, ' 2021.10.30.01.13.22: LOCAL testClassesListClass [GENERATED] Version: 1.00'),PROCEDURE,REQ(GlobaltestClassesListClass(testClassesListClass))
 #!
 #INSERT(%PreambleMe)
 #!
@@ -197,7 +197,7 @@ RelVer:testClassesListClass EQUATE('Rel:2021.04.18.07.39.42-Ver:1.00')
       #DISPLAY(''),AT(,,,1)
       #DISPLAY('testClassesListClass')
       #DISPLAY('Templates copyright (c) by each individual author.')
-      #DISPLAY('E-MAIL: roberto.artigas.dev@gmail.com')
+      #DISPLAY('Contact: roberto.artigas.dev@gmail.com')
     #ENDBOXED
     #DISPLAY(''),AT(,,,1)
     #BOXED('Debugging Local')

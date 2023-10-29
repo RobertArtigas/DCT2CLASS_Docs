@@ -2,22 +2,23 @@
 !  
 ! [None]
 !   1 : BASE class.
-!   0 :   Getter/Setter methods.
-!   0 :   Table I/O methods.
-!   0 :   Class transfer methods.
+!   1 :   Getter/Setter methods.
+!   1 :   Table I/O methods.
+!   1 :   Class transfer methods.
 !   1 :   Buffer transfer methods.
 !   1 :   Noyantis PG Base class helpers.
 !   1 : LIST class.
 !   1 :   Noyantis RC List class helpers.
-!   0 : Capesoft XML helpers.
-!   0 : Capesoft JSON helpers.
+!   1 : Capesoft XML helpers.
+!   1 : Capesoft JSON helpers.
 !
 ! Source:       .\classes\temp\testClassesBaseClass.clw
 ! Table:        Classes
+! Unique:       ClassNumber
 ! Class:        testClassesBaseClass
 ! Purpose:      Create a CLASS from a TABLE definition.
 ! Creator:      The DCT to CLASS generator (Clarion).
-! Date-Time:    2021/04/18 - 07:39:41AM
+! Date-Time:    2021/10/30 - 01:13:22AM
 !
   MEMBER()
 
@@ -39,20 +40,30 @@
   INCLUDE('StringTheory.INC'),ONCE
   INCLUDE('testClassesBaseClass.inc'),ONCE
 
-  INCLUDE('NYSEquates.equ'),ONCE                  ! Common Equates
-  INCLUDE('NYSCommon.inc'),ONCE                   ! Common Definitions
-  INCLUDE('NYSCalendarPro.inc'),ONCE              ! Calendars
-  INCLUDE('NYSChartPro.inc'),ONCE                 ! Charts
-  INCLUDE('NYSCommandBars.inc'),ONCE              ! Command Bars
-  INCLUDE('NYSDockingPane.inc'),ONCE              ! Docking Pane
-  INCLUDE('NYSFlowGraph.inc'),ONCE                ! Flow Graphs
-  INCLUDE('NYSPropertyGrid.inc'),ONCE             ! Property Grid
-  INCLUDE('NYSReportControl.inc'),ONCE            ! Reports
-  INCLUDE('NYSShortcutBar.inc'),ONCE              ! Shortcut Bars
-  INCLUDE('NYSSkinFramework.inc'),ONCE            ! Skin Framework
-  INCLUDE('NYSSuiteControls.inc'),ONCE            ! Suite Controls
-  INCLUDE('NYSSyntaxEdit.inc'),ONCE               ! Syntax Editor
-  INCLUDE('NYSTaskPanel.inc'),ONCE                ! Task Pannel
+  INCLUDE('xFiles.inc'),ONCE                                                             ! Definitions
+
+CLA_PREFIX_XML                                    EQUATE('CLA_')
+CLA_SUFFIX_XML                                    EQUATE('.XML')
+
+  INCLUDE('jFiles.inc'),ONCE                                                             ! Definitions
+
+CLA_PREFIX_JSON                                   EQUATE('CLA_')
+CLA_SUFFIX_JSON                                   EQUATE('.JSON')
+
+  INCLUDE('NYSEquates.equ'),ONCE                                                         ! Common Equates
+  INCLUDE('NYSCommon.inc'),ONCE                                                          ! Common Definitions
+  INCLUDE('NYSCalendarPro.inc'),ONCE                                                     ! Calendars
+  INCLUDE('NYSChartPro.inc'),ONCE                                                        ! Charts
+  INCLUDE('NYSCommandBars.inc'),ONCE                                                     ! Command Bars
+  INCLUDE('NYSDockingPane.inc'),ONCE                                                     ! Docking Pane
+  INCLUDE('NYSFlowGraph.inc'),ONCE                                                       ! Flow Graphs
+  INCLUDE('NYSPropertyGrid.inc'),ONCE                                                    ! Property Grid
+  INCLUDE('NYSReportControl.inc'),ONCE                                                   ! Reports
+  INCLUDE('NYSShortcutBar.inc'),ONCE                                                     ! Shortcut Bars
+  INCLUDE('NYSSkinFramework.inc'),ONCE                                                   ! Skin Framework
+  INCLUDE('NYSSuiteControls.inc'),ONCE                                                   ! Suite Controls
+  INCLUDE('NYSSyntaxEdit.inc'),ONCE                                                      ! Syntax Editor
+  INCLUDE('NYSTaskPanel.inc'),ONCE                                                       ! Task Panel
 
 CLA_GETSME_DATE                                   EQUATE('@D2B')
 CLA_SHOWME_DATE                                   EQUATE('@D02B')
@@ -63,6 +74,126 @@ CLA_SHOWME_TIME                                   EQUATE('@T04B')
 CLA_FORMAT_TIME                                   EQUATE('%h:%m:%s')
 CLA_BLANKS_TIME                                   EQUATE('__:__:__')
  
+!---------------------------------------------------------------------------------
+testClassesBaseClass.ClassNumber                  PROCEDURE()!,LONG
+  CODE
+  RETURN SELF.gCLArec.ClassNumber
+testClassesBaseClass.ClassNumber                  PROCEDURE(LONG pClassNumber)
+  CODE
+  SELF.gCLArec.ClassNumber                        = pClassNumber  
+  RETURN
+!---------------------------------------------------------------------------------
+testClassesBaseClass.CourseNumber                 PROCEDURE()!,LONG
+  CODE
+  RETURN SELF.gCLArec.CourseNumber
+testClassesBaseClass.CourseNumber                 PROCEDURE(LONG pCourseNumber)
+  CODE
+  SELF.gCLArec.CourseNumber                       = pCourseNumber  
+  RETURN
+!---------------------------------------------------------------------------------
+testClassesBaseClass.TeacherNumber                PROCEDURE()!,LONG
+  CODE
+  RETURN SELF.gCLArec.TeacherNumber
+testClassesBaseClass.TeacherNumber                PROCEDURE(LONG pTeacherNumber)
+  CODE
+  SELF.gCLArec.TeacherNumber                      = pTeacherNumber  
+  RETURN
+!---------------------------------------------------------------------------------
+testClassesBaseClass.RoomNumber                   PROCEDURE()!,LONG
+  CODE
+  RETURN SELF.gCLArec.RoomNumber
+testClassesBaseClass.RoomNumber                   PROCEDURE(LONG pRoomNumber)
+  CODE
+  SELF.gCLArec.RoomNumber                         = pRoomNumber  
+  RETURN
+!---------------------------------------------------------------------------------
+testClassesBaseClass.ScheduledTime                PROCEDURE()!,STRING
+  CODE
+  RETURN SELF.gCLArec.ScheduledTime
+testClassesBaseClass.ScheduledTime                PROCEDURE(STRING pScheduledTime)
+  CODE
+  SELF.gCLArec.ScheduledTime                      = pScheduledTime  
+  RETURN
+
+!---------------------------------------------------------------------------------
+testClassesBaseClass.InputXML                     PROCEDURE() !,STRING,PROC
+sSavePath                                         STRING(FILE:MaxFilePath)
+sSaveFile                                         STRING(FILE:MaxFileName)
+  CODE
+  sSavePath                                       = PATH()  
+  sSaveFile                                       = CLA_PREFIX_XML & CLIP(SELF.gCLArec.ClassNumber) & CLA_SUFFIX_XML  
+
+  IF FILEDIALOGA('Load XML file', sSaveFile, 'XML Files|*.XML|All Files|*.*', FILE:LongName + FILE:AddExtension)
+    SELF.oXML.Start()
+    SELF.oXML.Load(SELF.gCLArec, sSaveFile)        
+    SELF.Dump()                                                                                                        ! Testing
+
+    SELF.MoveDataToControlBasePG()
+  ELSE
+    CLEAR(sSaveFile)  
+  END
+  
+  SETPATH(sSavePath)                             
+  RETURN CLIP(sSaveFile)
+
+!---------------------------------------------------------------------
+testClassesBaseClass.OutputXML                    PROCEDURE() !,STRING,PROC
+sSavePath                                         STRING(FILE:MaxFilePath)
+sSaveFile                                         STRING(FILE:MaxFileName)
+  CODE
+  sSavePath                                       = PATH()  
+  sSaveFile                                       = CLA_PREFIX_XML & CLIP(SELF.gCLArec.ClassNumber) & CLA_SUFFIX_XML  
+
+  IF FILEDIALOGA('Save XML file', sSaveFile, 'XML Files|*.XML|All Files|*.*', FILE:Save + FILE:LongName + FILE:AddExtension)
+    SELF.Dump()                                                                                                        ! Testing
+    SELF.oXML.Start()
+    SELF.oXML.Save(SELF.gCLArec, sSaveFile)        
+  ELSE
+    CLEAR(sSaveFile)  
+  END
+  
+  SETPATH(sSavePath)                             
+  RETURN CLIP(sSaveFile)
+
+!---------------------------------------------------------------------------------
+testClassesBaseClass.InputJSON                    PROCEDURE() !,STRING,PROC
+sSavePath                                         STRING(FILE:MaxFilePath)
+sSaveFile                                         STRING(FILE:MaxFileName)
+  CODE
+  sSavePath                                       = PATH()  
+  sSaveFile                                       = CLA_PREFIX_JSON & CLIP(SELF.gCLArec.ClassNumber) & CLA_SUFFIX_JSON  
+
+  IF FILEDIALOGA('Load JSON file', sSaveFile, 'JSON Files|*.JSON|All Files|*.*', FILE:LongName + FILE:AddExtension)
+    SELF.oJSON.Start()
+    SELF.oJSON.Load(SELF.gCLArec, sSaveFile)       
+    SELF.Dump()                                                                                                        ! Testing
+
+    SELF.MoveDataToControlBasePG()
+  ELSE
+    CLEAR(sSaveFile)  
+  END
+  
+  SETPATH(sSavePath)                             
+  RETURN CLIP(sSaveFile)
+
+!---------------------------------------------------------------------
+testClassesBaseClass.OutputJSON                   PROCEDURE() !,STRING,PROC
+sSavePath                                         STRING(FILE:MaxFilePath)
+sSaveFile                                         STRING(FILE:MaxFileName)
+  CODE
+  sSavePath                                       = PATH()  
+  sSaveFile                                       = CLA_PREFIX_JSON & CLIP(SELF.gCLArec.ClassNumber) & CLA_SUFFIX_JSON  
+
+  IF FILEDIALOGA('Save JSON file', sSaveFile, 'JSON Files|*.JSON|All Files|*.*', FILE:Save + FILE:LongName + FILE:AddExtension)
+    SELF.Dump()                                                                                                        ! Testing
+    SELF.oJSON.Start()
+    SELF.oJSON.Save(SELF.gCLArec, sSaveFile)       
+  ELSE
+    CLEAR(sSaveFile)  
+  END
+  
+  SETPATH(sSavePath)                             
+  RETURN CLIP(sSaveFile)
 
 !---------------------------------------------------------------------------------
 testClassesBaseClass.SetBasePG                    PROCEDURE(PropertyGridClass pPG)
@@ -151,6 +282,8 @@ PropertyGrid_Result                               BYTE
   PropertyGrid_Result                             = SELF.oPG.SetItemRequired(CPG_CLA_FLD_00_05_SCHEDULEDTIME,TRUE)
 
                                                     SELF.oPG.SetSplitterPos('0.36')
+
+                                                    SELF.oPG.RefreshContents(TRUE)
 
   SELF.Debug(SELF.Thread() & ' EXITS: testClassesBaseClass.SetBasePG(<39>...<39>)')
   RETURN
@@ -243,7 +376,7 @@ DataAny                                           ANY
   SELF.Dump()
   SELF.DumpBasePG()
 
-  SELF.Debug(SELF.Thread() & ' EXITS: testClassesBaseClass.ItemAcceptedBasePG("' & CLIP(pID) & '","' & CLIP(pValue) & '","' & CLIP(pClarionValue) & ')')
+  SELF.Debug(SELF.Thread() & ' EXITS: testClassesBaseClass.ItemAcceptedBasePG("' & CLIP(pID) & '","' & CLIP(pValue) & '","' & CLIP(pClarionValue) & '")')
   RETURN
 
 !---------------------------------------------------------------------
@@ -360,6 +493,10 @@ testClassesBaseClass.Construct                    PROCEDURE()
   SELF.oOwnerString                               &= NEW(StringTheory)
   SELF.Clean()
 
+  SELF.oXML                                       &= NEW(xFileXML)
+
+  SELF.oJSON                                      &= NEW(JSONClass)
+
   SELF.oPG                                        &= NULL
   RETURN
 
@@ -368,6 +505,12 @@ testClassesBaseClass.Destruct                     PROCEDURE()
   CODE
   DISPOSE(SELF.oOwnerString)
   SELF.oOwnerString                               &= NULL
+
+  DISPOSE(SELF.oXML)
+  SELF.oXML                                       &= NULL
+
+  DISPOSE(SELF.oJSON)
+  SELF.oJSON                                      &= NULL
 
   SELF.oPG                                        &= NULL
   RETURN
@@ -474,8 +617,570 @@ testClassesBaseClass.CreatesPrime                 PROCEDURE()
   SELF.gCLArec.ScheduledTime                      = CPG_CLA_FLD_DEF_SCHEDULEDTIME
   RETURN
 
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+! Table Field Count:                              5
+! Fields Processed:                               5
+!---------------------------------------------------------------------------------
+testClassesBaseClass.Creates                      PROCEDURE(STRING pClassNumber)
+ST                                                StringTheory
+HaveError                                         LONG(0)
+SQLFile                                           &DynFile
+TheFile                                           &File
+lQuery                                            StringTheory
+lFields                                           StringTheory
+lValues                                           StringTheory
+nFieldNumber                                      LONG(0)
+sFieldTemp                                        STRING(255)
+sFieldWhom                                        STRING(255)
+sFieldType                                        STRING(20)
+sValue                                            STRING(255)
+DataAny                                           ANY
+  CODE
 
-!BANANA: Generate the Methods
+  !------------------------------------------------------------------------------------!
+  ! The following is an example of how to build an insert statement from the initial   !
+  ! values in the dictionary. The requirement is that you have your dictionary setup   !
+  ! properly. If the values are not right, the code below will not look correct.       !
+  !------------------------------------------------------------------------------------!
+  ! NOTE: This will not work for VIEWs with multiple JOINed tables.                    !
+  !------------------------------------------------------------------------------------!
+  ! lQuery.SetValue('INSERT INTO CLASSES.TPS (')
+  ! lQuery.Append  (' ClassNumber, CourseNumber, TeacherNumber, RoomNumber, ScheduledTime')
+  ! lQuery.Append  (' ) VALUES (')
+  ! lQuery.Append  (' 0, 0, 0, 0, ''''')
+  ! lQuery.Append  (' )')
+
+  SELF.Clean()
+  SELF.CreatesPrime()
+
+  SELF.gCLArec.ClassNumber                         = pClassNumber  
+
+  lFields.SetValue('')
+  lValues.SetValue('')
+  LOOP nFieldNumber = 1 TO 5
+    sFieldTemp                                     = WHO(SELF.gCLArec, nFieldNumber)
+    ST.Setvalue(sFieldTemp)                      
+    ST.Split('|',,,,TRUE,TRUE)                   
+    sFieldWhom                                     = ST.GetLine(1)  
+    sFieldType                                     = ST.GetLine(2)  
+
+    DataAny                                       &= WHAT(SELF.gCLArec, nFieldNumber)  
+    sValue                                         = DataAny  
+    
+    IF (FALSE) THEN
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sFieldTemp) & '"' , FALSE)
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sFieldWhom) & '"' , FALSE)
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sFieldType) & '"' , FALSE)
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sValue) & '"' , FALSE)
+    END
+    
+    CASE(UPPER(CLIP(sFieldWhom)))
+    OF  ('ENCRYPTIONVERSION')
+    OROF('STS')
+    OROF('SERVERTIMESTAMP')
+    OROF('DTS')
+    OROF('DELETETIMESTAMP')
+    OROF('DELETEDTIMESTAMP')
+      CYCLE
+    END!CASE
+    
+    IF(nFieldNumber > 1)
+      lFields.Append  (' , ')
+      lValues.Append  (' , ')
+    ELSE
+      lFields.Append  (' ')
+      lValues.Append  (' ')
+    END
+    
+        lFields.Append  (CLIP(sFieldWhom))
+    CASE(UPPER(CLIP(sFieldWhom)))
+    OF  ('TS')
+    OROF('TIMESTAMP')
+    OROF('STS')
+    OROF('SERVERTIMESTAMP')
+    OROF('DTS')
+    OROF('DELETETIMESTAMP')
+    OROF('DELETEDTIMESTAMP')
+        lValues.Append  ('define.ryb_sf_getelapsedtimeutc()')
+    OF  ('DATE_UPDATE')
+        lValues.Append  ('current_date')                                                                               ! POSTGRESQL
+    OF  ('TIME_UPDATE')
+        lValues.Append  ('current_time')                                                                               ! POSTGRESQL
+    OF  ('USER_UPDATE')
+        lValues.Append  ('current_user')                                                                               ! POSTGRESQL
+    OF  ('ACTIVE_FLAG')
+        lValues.Append  ('''A''')
+    ELSE
+      IF SELF._IsFieldTypeNumeric(sFieldType) THEN
+        lValues.Append  (CLIP(sValue))
+      ELSE
+        lValues.Append  ('''' & CLIP(sValue) & '''')
+      END
+    END
+    
+  END
+
+  If (FALSE)
+    SELF.Debug(SELF.Thread() & ' lFields=[' & lFields.GetValue() & ']' , FALSE)
+    SELF.Debug(SELF.Thread() & ' lValues=[' & lValues.GetValue() & ']' , FALSE)
+  END
+
+  lQuery.SetValue('INSERT INTO CLASSES.TPS (')
+  lQuery.Append  (lFields.GetValue())  
+  lQuery.Append  (' ) VALUES (')
+  lQuery.Append  (lValues.GetValue())  
+  lQuery.Append  (' )')
+
+  SELF.Debug(SELF.Thread() & ' testClassesBaseClass.Creates lQuery=<39>' & lQuery.GetValue() & '<39>' , FALSE)
+
+  SELF._SendSQL(lQuery.GetValue())                                                                                     ! Creates table record as 'A'ctive
+  SELF.Reads(pClassNumber)                                                                                             ! Read and display new values
+  RETURN 
+
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+! Table Field Count:                              5
+! Fields Processed:                               5
+!---------------------------------------------------------------------------------
+testClassesBaseClass.CreatesCopy                  PROCEDURE(STRING pClassNumber)
+ST                                                StringTheory
+HaveError                                         LONG(0)
+SQLFile                                           &DynFile
+TheFile                                           &File
+lQuery                                            StringTheory
+lFields                                           StringTheory
+lValues                                           StringTheory
+nFieldNumber                                      LONG(0)
+sFieldTemp                                        STRING(255)
+sFieldWhom                                        STRING(255)
+sFieldType                                        STRING(20)
+sValue                                            STRING(255)
+DataAny                                           ANY
+  CODE
+
+  !------------------------------------------------------------------------------------!
+  ! The following is an example of how to build an insert statement from the initial   !
+  ! values in the dictionary. The requirement is that you have your dictionary setup   !
+  ! properly. If the values are not right, the code below will not look correct.       !
+  !------------------------------------------------------------------------------------!
+  ! NOTE: This will not work for VIEWs with multiple JOINed tables.                    !
+  !------------------------------------------------------------------------------------!
+  ! lQuery.SetValue('INSERT INTO CLASSES.TPS (')
+  ! lQuery.Append  (' ClassNumber, CourseNumber, TeacherNumber, RoomNumber, ScheduledTime')
+  ! lQuery.Append  (' ) VALUES (')
+  ! lQuery.Append  (' 0, 0, 0, 0, ''''')
+  ! lQuery.Append  (' )')
+
+  SELF.gCLArec.ClassNumber                         = pClassNumber  
+
+  lFields.SetValue('')
+  lValues.SetValue('')
+  LOOP nFieldNumber = 1 TO 5
+    sFieldTemp                                     = WHO(SELF.gCLArec, nFieldNumber)
+    ST.Setvalue(sFieldTemp)                      
+    ST.Split('|',,,,TRUE,TRUE)                   
+    sFieldWhom                                     = ST.GetLine(1)  
+    sFieldType                                     = ST.GetLine(2)  
+
+    DataAny                                       &= WHAT(SELF.gCLArec, nFieldNumber)  
+    sValue                                         = DataAny  
+    
+    IF (FALSE) THEN
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sFieldTemp) & '"' , FALSE)
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sFieldWhom) & '"' , FALSE)
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sFieldType) & '"' , FALSE)
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sValue) & '"' , FALSE)
+    END
+    
+    CASE(UPPER(CLIP(sFieldWhom)))
+    OF  ('ENCRYPTIONVERSION')
+    OROF('STS')
+    OROF('SERVERTIMESTAMP')
+    OROF('DTS')
+    OROF('DELETETIMESTAMP')
+    OROF('DELETEDTIMESTAMP')
+      CYCLE
+    END!CASE
+    
+    IF(nFieldNumber > 1)
+      lFields.Append  (' , ')
+      lValues.Append  (' , ')
+    ELSE
+      lFields.Append  (' ')
+      lValues.Append  (' ')
+    END
+    
+        lFields.Append  (CLIP(sFieldWhom))
+    CASE(UPPER(CLIP(sFieldWhom)))
+    OF  ('TS')
+    OROF('TIMESTAMP')
+    OROF('STS')
+    OROF('SERVERTIMESTAMP')
+    OROF('DTS')
+    OROF('DELETETIMESTAMP')
+    OROF('DELETEDTIMESTAMP')
+        lValues.Append  ('define.ryb_sf_getelapsedtimeutc()')
+    OF  ('DATE_UPDATE')
+        lValues.Append  ('current_date')                                                                               ! POSTGRESQL
+    OF  ('TIME_UPDATE')
+        lValues.Append  ('current_time')                                                                               ! POSTGRESQL
+    OF  ('USER_UPDATE')
+        lValues.Append  ('current_user')                                                                               ! POSTGRESQL
+    OF  ('ACTIVE_FLAG')
+        lValues.Append  ('''A''')
+    ELSE
+      IF SELF._IsFieldTypeNumeric(sFieldType) THEN
+        lValues.Append  (CLIP(sValue))
+      ELSE
+        lValues.Append  ('''' & CLIP(sValue) & '''')
+      END
+    END
+    
+  END
+
+  If (FALSE)
+    SELF.Debug(SELF.Thread() & ' lFields=[' & lFields.GetValue() & ']' , FALSE)
+    SELF.Debug(SELF.Thread() & ' lValues=[' & lValues.GetValue() & ']' , FALSE)
+  END
+
+  lQuery.SetValue('INSERT INTO CLASSES.TPS (')
+  lQuery.Append  (lFields.GetValue())  
+  lQuery.Append  (' ) VALUES (')
+  lQuery.Append  (lValues.GetValue())  
+  lQuery.Append  (' )')
+
+  SELF.Debug(SELF.Thread() & ' testClassesBaseClass.CreatesCopy lQuery=<39>' & lQuery.GetValue() & '<39>' , FALSE)
+
+  SELF._SendSQL(lQuery.GetValue())                                                                                     ! Creates table record as 'A'ctive
+  SELF.Reads(pClassNumber)                                                                                             ! Read and display new values
+  RETURN 
+
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+!---------------------------------------------------------------------------------
+testClassesBaseClass.Reads                        PROCEDURE(STRING pClassNumber, BYTE pDoHistory, BYTE pDoSave)!,LONG,PROC
+Result                                            LONG(TRUE)
+HaveError                                         LONG(0)
+SQLFile                                           &DynFile
+TheFile                                           &File
+lQuery                                            StringTheory
+  CODE
+  SELF.Debug(SELF.Thread() & ' testClassesBaseClass.Reads(<39>' & CLIP(pClassNumber) & '<39>)')
+
+  ! IMPORTANT  Replace '*' below with just the fields you need. Recall joining tables for efficiency.
+  ! REMINDERS: Avoid moving lots of data around specially if you are using a remote data source.
+  !            AFTER TESTING: Make sure you comment out the !SETCLIPBOARD(...)
+  !            AFTER TESTING: Set the SELF.Debug('...',TRUE) to SELF.Debug('...',FALSE)
+  !
+  ! NOTE:      Found 5 fields [FROM: 'CLASSES.TPS']
+  ! lQuery.SetValue('SELECT') 
+  ! lQuery.Append  (' Classes.ClassNumber, Classes.CourseNumber, Classes.TeacherNumber, Classes.RoomNumber, Classes.ScheduledTime')
+  ! lQuery.Append  (' FROM CLASSES.TPS')
+  ! lQuery.Append  (' WHERE ClassNumber = ' & pClassNumber & '')
+  !
+  lQuery.SetValue('SELECT Classes.* FROM CLASSES.TPS WHERE ClassNumber = ' & pClassNumber & '')
+  !SETCLIPBOARD(lQuery.GetValue())
+  SELF.Debug(SELF.Thread() & ':lQuery=( "' & lQuery.GetValue() & '" )' , FALSE)
+
+  SQLFile &= NEW(DynFile)
+  SQLFile.SetDriver('ODBC')
+  SQLFile.SetOwner(SELF.oOwnerString.GetValue())
+
+  HaveError = SQLFile.CreateFromSQL(lQuery.GetValue())
+  IF HaveError THEN
+    SELF.Debug(SELF.Thread() & ':ERROR testClassesBaseClass.Reads HaveError(' & HaveError & ') [ ' & ERRORCODE() & ' ]: ' & ERROR() & '' , TRUE)
+    IF HaveError = FileSystemErr THEN                                                                                  ! 90: File System Error
+      SELF.Debug(SELF.Thread() & ':ERROR testClassesBaseClass.Reads [ ' & FILEERRORCODE() & ' ]: ' & FILEERROR() & '' , TRUE)
+    END
+  ELSE
+    TheFile &= SQLFile.GetFileRef()
+    NEXT(TheFile)
+    IF ERRORCODE() = BadRecErr THEN                                                                                    ! 33: Record Not Available
+    ELSIF ERRORCODE() > 0 THEN 
+      SELF.Debug(SELF.Thread() & ':ERROR testClassesBaseClass.Reads [ ' & ERRORCODE() & ' ]: ' & ERROR() & '' , TRUE)
+    ELSE
+      SELF.gCLArec.ClassNumber                               = SQLFile.GetField('ClassNumber')
+      SELF.gCLArec.CourseNumber                              = SQLFile.GetField('CourseNumber')
+      SELF.gCLArec.TeacherNumber                             = SQLFile.GetField('TeacherNumber')
+      SELF.gCLArec.RoomNumber                                = SQLFile.GetField('RoomNumber')
+      SELF.gCLArec.ScheduledTime                             = SQLFile.GetField('ScheduledTime')
+
+      !SELF.Dump()                                                                                                     ! TESTING!!!
+
+      IF (pDoHistory) 
+        SELF.gCLAhist                             :=: SELF.gCLArec
+      END
+      IF (pDoSave) 
+        SELF.gCLAsave                             :=: SELF.gCLArec
+      END
+
+      SELF.MoveDataToControlBasePG()
+
+      SELF.Debug(SELF.Thread() & ':READ testClassesBaseClass.Reads [ ' & ERRORCODE() & ' ]: ' & ERROR() & '' , FALSE)
+    END
+  END! IF
+  DISPOSE(SQLFile)
+  RETURN Result
+
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+!---------------------------------------------------------------------------------
+testClassesBaseClass.ReadsHistory                 PROCEDURE(STRING pClassNumber, BYTE pDoSave)!,LONG,PROC
+Result                                            LONG(TRUE)
+HaveError                                         LONG(0)
+SQLFile                                           &DynFile
+TheFile                                           &File
+lQuery                                            StringTheory
+  CODE
+  SELF.Debug(SELF.Thread() & ' testClassesBaseClass.ReadsHistory(<39>' & CLIP(pClassNumber) & '<39>)')
+
+  ! IMPORTANT  Replace '*' below with just the fields you need. Recall joining tables for efficiency.
+  ! REMINDERS: Avoid moving lots of data around specially if you are using a remote data source.
+  !            AFTER TESTING: Make sure you comment out the !SETCLIPBOARD(...)
+  !            AFTER TESTING: Set the SELF.Debug('...',TRUE) to SELF.Debug('...',FALSE)
+  !
+  ! NOTE:      Found 5 fields [FROM: 'CLASSES.TPS']
+  ! lQuery.SetValue('SELECT') 
+  ! lQuery.Append  (' Classes.ClassNumber, Classes.CourseNumber, Classes.TeacherNumber, Classes.RoomNumber, Classes.ScheduledTime')
+  ! lQuery.Append  (' FROM CLASSES.TPS')
+  ! lQuery.Append  (' WHERE ClassNumber = ' & pClassNumber & '')
+  !
+  lQuery.SetValue('SELECT Classes.* FROM CLASSES.TPS WHERE ClassNumber = ' & pClassNumber & '')
+  !SETCLIPBOARD(lQuery.GetValue())
+  SELF.Debug(SELF.Thread() & ':lQuery=( "' & lQuery.GetValue() & '" )' , FALSE)
+
+  SQLFile &= NEW(DynFile)
+  SQLFile.SetDriver('ODBC')
+  SQLFile.SetOwner(SELF.oOwnerString.GetValue())
+
+  HaveError = SQLFile.CreateFromSQL(lQuery.GetValue())
+  IF HaveError THEN
+    SELF.Debug(SELF.Thread() & ':ERROR testClassesBaseClass.ReadsHistory HaveError(' & HaveError & ') [ ' & ERRORCODE() & ' ]: ' & ERROR() & '' , TRUE)
+    IF HaveError = FileSystemErr THEN                                                                                  ! 90: File System Error
+      SELF.Debug(SELF.Thread() & ':ERROR testClassesBaseClass.ReadsHistory [ ' & FILEERRORCODE() & ' ]: ' & FILEERROR() & '' , TRUE)
+    END
+  ELSE
+    TheFile &= SQLFile.GetFileRef()
+    NEXT(TheFile)
+    IF ERRORCODE() = BadRecErr THEN                                                                                    ! 33: Record Not Available
+    ELSIF ERRORCODE() > 0 THEN 
+      SELF.Debug(SELF.Thread() & ':ERROR testClassesBaseClass.ReadsHistory [ ' & ERRORCODE() & ' ]: ' & ERROR() & '' , TRUE)
+    ELSE
+      SELF.gCLAhist.ClassNumber                              = SQLFile.GetField('ClassNumber')
+      SELF.gCLAhist.CourseNumber                             = SQLFile.GetField('CourseNumber')
+      SELF.gCLAhist.TeacherNumber                            = SQLFile.GetField('TeacherNumber')
+      SELF.gCLAhist.RoomNumber                               = SQLFile.GetField('RoomNumber')
+      SELF.gCLAhist.ScheduledTime                            = SQLFile.GetField('ScheduledTime')
+
+      IF (pDoSave) 
+        SELF.gCLAsave                             :=: SELF.gCLAhist
+      END
+
+      SELF.Debug(SELF.Thread() & ':READ testClassesBaseClass.ReadsHistory [ ' & ERRORCODE() & ' ]: ' & ERROR() & '' , FALSE)
+    END
+  END! IF
+  DISPOSE(SQLFile)
+  RETURN Result
+
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+!---------------------------------------------------------------------------------
+testClassesBaseClass.Updates                      PROCEDURE(STRING pClassNumber)
+Result                                            LONG(TRUE)
+lFieldsChanged                                    LONG(0)
+  CODE
+  CLEAR(SELF.gCLAhist)
+  Result                                          = SELF.ReadsHistory(pClassNumber)
+  lFieldsChanged                                  = SELF.IsRecordChanged()  
+  IF (lFieldsChanged)
+    SELF.UpdatesDo(pClassNumber)
+  ELSE
+    SELF.Debug(SELF.Thread() & ' testClassesBaseClass.Updates lFieldsChanged=[ ' & lFieldsChanged & ' ]: NO UPDATES! Nothing has changed.' , FALSE)
+  END
+  RETURN
+
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+!---------------------------------------------------------------------------------
+testClassesBaseClass.UpdatesDo                    PROCEDURE(STRING pClassNumber)
+ST                                                StringTheory
+HaveError                                         LONG(0)
+SQLFile                                           &DynFile
+TheFile                                           &File
+lQuery                                            StringTheory
+nFieldNumber                                      LONG(0)
+sFieldTemp                                        STRING(255)
+sFieldWhom                                        STRING(255)
+sFieldType                                        STRING(20)
+sValue                                            STRING(255)
+DataAny                                           ANY
+  CODE
+
+  !------------------------------------------------------------------------------------!
+  ! The following is an example of how to build an update statement from the initial   !
+  ! values in the dictionary. The requirement is that you have your dictionary setup   !
+  ! properly. If the values are not right, the code below will not look correct.       !
+  !------------------------------------------------------------------------------------!
+  ! NOTE: This will not work for VIEWs with multiple JOINed tables.                    !
+  !------------------------------------------------------------------------------------!
+  ! lQuery.SetValue('UPDATE CLASSES.TPS')
+  ! lQuery.Append  (' SET ClassNumber = 0, CourseNumber = 0, TeacherNumber = 0, RoomNumber = 0, ScheduledTime = ''''')
+  ! lQuery.Append  (' WHERE ClassNumber = ' & pClassNumber & '')
+
+  SELF.gCLArec.ClassNumber                         = pClassNumber  
+
+  LOOP nFieldNumber = 1 TO 5
+    sFieldTemp                                     = WHO(SELF.gCLArec, nFieldNumber)  
+    ST.Setvalue(sFieldTemp)                      
+    ST.Split('|',,,,TRUE,TRUE)                   
+    sFieldWhom                                     = ST.GetLine(1)  
+    sFieldType                                     = ST.GetLine(2)  
+    DataAny                                       &= WHAT(SELF.gCLArec, nFieldNumber)  
+    sValue                                         = DataAny  
+    
+    IF (FALSE) THEN
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sFieldTemp) & '"' , FALSE)
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sFieldWhom) & '"' , FALSE)
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sFieldType) & '"' , FALSE)
+      SELF.Debug(SELF.Thread() & ' [ ' & FORMAT(nFieldNumber,@N02) & ' ]="' & CLIP(sValue) & '"' , FALSE)
+    END
+    
+    CASE(UPPER(CLIP(sFieldWhom)))
+    OF  ('ENCRYPTIONVERSION')
+    OROF('STS')
+    OROF('SERVERTIMESTAMP')
+    OROF('GUID')
+      CYCLE
+    END!CASE
+    
+    CASE(UPPER(CLIP(sFieldWhom)))
+    OF  ('TS')
+    OROF('TIMESTAMP')
+          IF(nFieldNumber > 1) THEN lQuery.Append (' , ') ELSE lQuery.Append (' SET ') END
+          lQuery.Append  (CLIP(sFieldWhom) & ' = ')
+          lQuery.Append  ('define.ryb_sf_getelapsedtimeutc()')
+    OF  ('DTS')
+    OROF('DELETETIMESTAMP')
+    OROF('DELETEDTIMESTAMP')
+          IF(nFieldNumber > 1) THEN lQuery.Append (' , ') ELSE lQuery.Append (' SET ') END
+          lQuery.Append  (CLIP(sFieldWhom) & ' = ')
+          lQuery.Append  ('0')
+    OF  ('DATE_UPDATE')
+          IF(nFieldNumber > 1) THEN lQuery.Append (' , ') ELSE lQuery.Append (' SET ') END
+          lQuery.Append  (CLIP(sFieldWhom) & ' = ')
+          lQuery.Append  ('current_date')                                                                              ! POSTGRESQL
+    OF  ('TIME_UPDATE')
+          IF(nFieldNumber > 1) THEN lQuery.Append (' , ') ELSE lQuery.Append (' SET ') END
+          lQuery.Append  (CLIP(sFieldWhom) & ' = ')
+          lQuery.Append  ('current_time')                                                                              ! POSTGRESQL
+    OF  ('USER_UPDATE')
+          IF(nFieldNumber > 1) THEN lQuery.Append (' , ') ELSE lQuery.Append (' SET ') END
+          lQuery.Append  (CLIP(sFieldWhom) & ' = ')
+          lQuery.Append  ('current_user')                                                                              ! POSTGRESQL
+    ELSE
+      IF SELF.IsFieldChanged(nFieldNumber) THEN
+          !SELF.Debug(SELF.Thread() & ' testClassesBaseClass.UpdatesDo sFieldWhom="' & CLIP(sFieldWhom) & '" CHANGED' , FALSE)
+          IF(nFieldNumber > 1) THEN lQuery.Append (' , ') ELSE lQuery.Append (' SET ') END
+          lQuery.Append  (CLIP(sFieldWhom) & ' = ')
+        IF SELF._IsFieldTypeNumeric(sFieldType) THEN
+          lQuery.Append  (CLIP(sValue))
+        ELSE
+          lQuery.Append  ('''' & CLIP(sValue) & '''')
+        END
+      ELSE
+          !SELF.Debug(SELF.Thread() & ' testClassesBaseClass.UpdatesDo sFieldWhom="' & CLIP(sFieldWhom) & '" SAME' , FALSE)
+      END
+    END
+    
+  END
+          lQuery.Append  (' WHERE ClassNumber = ' & pClassNumber & '')
+
+  !SELF.Dump()                                                                                                         ! Testing
+  SELF.Debug(SELF.Thread() & ' testClassesBaseClass.UpdatesDo lQuery=<39>' & lQuery.GetValue() & '<39>' , FALSE)
+
+  SELF._SendSQL(lQuery.GetValue())                                                                                     ! Update table record as 'A'ctive
+  SELF.Reads(pClassNumber)                                                                                             ! Read and display new values
+  RETURN
+
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+!---------------------------------------------------------------------------------
+testClassesBaseClass.Deletes                      PROCEDURE(STRING pClassNumber)
+HaveError                                         LONG(0)
+SQLFile                                           &DynFile
+TheFile                                           &File
+lQuery                                            StringTheory
+  CODE
+
+  !------------------------------------------------------------------------------------!
+  ! While this is an example of deleting a table record, we might not want to do this. !
+  ! A possible better choice is to update the record, and just mark it as deleted.     !
+  ! This other choice is implemented below. Your requirements and mileage may vary.    !
+  !------------------------------------------------------------------------------------!
+  ! NOTE: This will not work for VIEWs with multiple JOINed tables.                    !
+  !------------------------------------------------------------------------------------!
+  ! lQuery.SetValue('DELETE CLASSES.TPS')
+  ! lQuery.Append  (' WHERE ClassNumber = ' & pClassNumber & '')
+
+  !------------------------------------------------------------------------------------!
+  ! We have implemented here an update of the table record, marking it as deleted.     !
+  !------------------------------------------------------------------------------------!
+  ! lQuery.SetValue('UPDATE CLASSES.TPS')
+  ! lQuery.Append  (' SET ')
+  ! lQuery.Append  (' WHERE ClassNumber = ' & pClassNumber & '')
+
+  SELF.Debug(SELF.Thread() & ' testClassesBaseClass.Deletes lQuery=<39>' & lQuery.GetValue() & '<39>' , FALSE)
+
+  SELF._SendSQL(lQuery.GetValue())                                                                                     ! Update table record as 'D'eleted
+  SELF.Reads(pClassNumber)                                                                                             ! Read and display new values
+  RETURN
+
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+!---------------------------------------------------------------------------------
+testClassesBaseClass.SetsTransferClass            PROCEDURE(testClassesBaseClass pTransfer)                            ! Change class reference
+!---------------------------------------------------------------------------------
+  CODE
+  SELF.oTransfer                                  &= pTransfer
+  RETURN
+
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+!---------------------------------------------------------------------------------
+testClassesBaseClass.ReadTransferClass            PROCEDURE()
+!---------------------------------------------------------------------------------
+  CODE
+  SELF.gCLArec.ClassNumber                        = SELF.oTransfer.gCLArec.ClassNumber
+  SELF.gCLArec.CourseNumber                       = SELF.oTransfer.gCLArec.CourseNumber
+  SELF.gCLArec.TeacherNumber                      = SELF.oTransfer.gCLArec.TeacherNumber
+  SELF.gCLArec.RoomNumber                         = SELF.oTransfer.gCLArec.RoomNumber
+  SELF.gCLArec.ScheduledTime                      = SELF.oTransfer.gCLArec.ScheduledTime
+  RETURN
+  
+!---------------------------------------------------------------------------------
+! File:                                           Classes
+! FileName:                                       'CLASSES.TPS'
+!---------------------------------------------------------------------------------
+testClassesBaseClass.SaveTransferClass            PROCEDURE()
+!---------------------------------------------------------------------------------
+  CODE
+  SELF.oTransfer.gCLArec.ClassNumber              = SELF.gCLArec.ClassNumber
+  SELF.oTransfer.gCLArec.CourseNumber             = SELF.gCLArec.CourseNumber
+  SELF.oTransfer.gCLArec.TeacherNumber            = SELF.gCLArec.TeacherNumber
+  SELF.oTransfer.gCLArec.RoomNumber               = SELF.gCLArec.RoomNumber
+  SELF.oTransfer.gCLArec.ScheduledTime            = SELF.gCLArec.ScheduledTime
+  RETURN
+
 !---------------------------------------------------------------------------------
 ! File:                                           Classes
 ! FileName:                                       'CLASSES.TPS'
@@ -484,13 +1189,14 @@ testClassesBaseClass.BufferToProperties           PROCEDURE(*gtCLAbase xBuffG)
   CODE
   SELF.Debug(SELF.Thread() & ' ENTRY: testClassesBaseClass.BufferToProperties(<39>...<39>)')
 
-  !SELF.gCLAbuff                                  = xBuffG
   SELF.gCLArec                                    = xBuffG
 
   SELF.MoveDataToControlBasePG()                 
 
-  SELF.Dump()                                    
-  SELF.DumpBasePG()                              
+  IF (FALSE)                                                                                                           ! TESTING!!!
+    SELF.Dump()                                  
+    SELF.DumpBasePG()                            
+  END
 
   SELF.Debug(SELF.Thread() & ' EXITS: testClassesBaseClass.BufferToProperties(<39>...<39>)')
   RETURN
@@ -503,11 +1209,12 @@ testClassesBaseClass.BufferFromProperties         PROCEDURE(*gtCLAbase xBuffG)
   CODE
   SELF.Debug(SELF.Thread() & ' ENTRY: testClassesBaseClass.BufferFromProperties(<39>...<39>)')
 
-  !xBuffG                                         = SELF.gCLAbuff
   xBuffG                                          = SELF.gCLArec
 
-  SELF.Dump()                                    
-  SELF.DumpBasePG()                              
+  IF (FALSE)                                                                                                           ! TESTING!!!
+    SELF.Dump()                                  
+    SELF.DumpBasePG()                            
+  END
 
   SELF.Debug(SELF.Thread() & ' EXITS: testClassesBaseClass.BufferFromProperties(<39>...<39>)')
   RETURN
@@ -582,18 +1289,18 @@ testClassesBaseClass._IsFieldTypeNumeric          PROCEDURE(STRING pFieldType) !
 !  
 ! [None]
 !   1 : BASE class.
-!   0 :   Getter/Setter methods.
-!   0 :   Table I/O methods.
-!   0 :   Class transfer methods.
+!   1 :   Getter/Setter methods.
+!   1 :   Table I/O methods.
+!   1 :   Class transfer methods.
 !   1 :   Buffer transfer methods.
 !   1 :   Noyantis PG Base class helpers.
 !   1 : LIST class.
 !   1 :   Noyantis RC List class helpers.
-!   0 : Capesoft XML helpers.
-!   0 : Capesoft JSON helpers.
+!   1 : Capesoft XML helpers.
+!   1 : Capesoft JSON helpers.
 !
-!    Ending Date-Time: 2021/04/18 - 07:39:14AM
-! Beginning Date-Time: 2021/04/18 - 07:39:14AM
+!    Ending Date-Time: 2021/10/30 - 01:13:07AM
+! Beginning Date-Time: 2021/10/30 - 01:13:07AM
 !     Processing Time: 0 hundreths of a second (1 seconds)
 !
 !EOF

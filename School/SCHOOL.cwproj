@@ -6,7 +6,7 @@
     <OutputType>WinExe</OutputType>
     <AssemblyName>SCHOOL</AssemblyName>
     <OutputName>school</OutputName>
-    <DefineConstants>StringTheoryLinkMode=&gt;1%3bStringTheoryDllMode=&gt;0%3bMD5=&gt;0%3b_ABCDllMode_=&gt;0%3b_ABCLinkMode_=&gt;1</DefineConstants>
+    <DefineConstants>StringTheoryLinkMode=&gt;1%3bStringTheoryDllMode=&gt;0%3bMD5=&gt;0%3bxFilesLinkMode=&gt;1%3bxFilesDllMode=&gt;0%3b_XFILES_=&gt;1%3b_XFILES4_=&gt;1%3bjFilesLinkMode=&gt;1%3bjFilesDllMode=&gt;0%3b_JFILES_=&gt;1%3bReflectionLM=&gt;1%3bReflectionDM=&gt;0%3b_ABCDllMode_=&gt;0%3b_ABCLinkMode_=&gt;1</DefineConstants>
     <Model>Dll</Model>
     <StartArguments>/LOCAL</StartArguments>
     <ApplicationIcon>_SoftVUn.ico</ApplicationIcon>
@@ -117,6 +117,9 @@
     <Compile Include="SCHOOL029.clw">
       <Generated>true</Generated>
     </Compile>
+    <Compile Include="SCHOOL030.clw">
+      <Generated>true</Generated>
+    </Compile>
     <Compile Include="SCHOOL_BC.CLW">
       <Generated>true</Generated>
     </Compile>
@@ -130,7 +133,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Library Include="C%25V%25DF%25X%25.LIB" />
     <Library Include="Closed.ico" />
+    <Library Include="nysCheckOff.ico" />
+    <Library Include="nysCheckOn.ico" />
     <Library Include="Open.ico" />
     <Library Include="SCHOOL.exe.manifest" />
     <FileDriver Include="ASCII" />
